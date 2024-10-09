@@ -1,13 +1,13 @@
 import logo from "@/assets/logo.svg";
 import Navbar from "./navbar";
 import { Button } from "@/components/ui/button";
-import { shortenAddress } from "@/lib/utils";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { shortenAddress } from "@/utils";
 
 function Header() {
   return (
-    <div className="sticky bg-black">
-      <div className="container mx-auto flex max-h-20 min-h-20 items-center justify-between">
+    <div className="stick bg-[url('/images/navbar-bg.svg')] bg-cover bg-no-repeat">
+      <div className="border-b-1 container mx-auto flex max-h-20 min-h-20 items-center justify-between">
         <div className="flex cursor-pointer items-center gap-20">
           <a href="/">
             <img src={logo} alt="logo" />

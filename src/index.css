@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -62,5 +64,32 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Oxanium", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
   }
+}
+
+.text-color-primary {
+  color: #69e2db !important;
+}
+
+.text-color-secondary {
+  color: #cdc5ff !important;
+}
+
+.text-color-danger {
+  color: #e26969 !important;
+}
+
+.bg-color-primary {
+  background-color: #1e2738 !important ;
+}
+
+.bg-color-secondary {
+  background-color: #221e38 !important ;
+}
+
+.data-\[state\=checked\]\:bg-primary[data-state="checked"] {
+  background-color: #69e2db !important;
 }
