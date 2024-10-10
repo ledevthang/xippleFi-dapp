@@ -18,6 +18,6 @@ export function formatCurrency(amount: number) {
   return formatter.format(amount);
 }
 
-export function formatToTwoDecimals(amount: number) {
+export function formatToTwoDecimals(amount: number = 0) {
   return amount.toFixed(2);
 }
