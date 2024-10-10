@@ -6,7 +6,7 @@ function Layout() {
   return (
     <div className="flex min-h-[100vh] flex-col">
       <Header />
-      <div className="flex flex-1 bg-[#161B28]">
+      <div className="bg flex flex-1">
         <Outlet />
         <Toaster />
       </div>

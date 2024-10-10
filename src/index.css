@@ -64,9 +64,14 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Oxanium", sans-serif;
+    font-family: "Oxanium", sans-serif !important;
     font-optical-sizing: auto;
     font-style: normal;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
@@ -82,14 +87,37 @@
   color: #e26969 !important;
 }
 
-.bg-color-primary {
-  background-color: #1e2738 !important ;
+.bg {
+  background: #070707;
 }
 
-.bg-color-secondary {
-  background-color: #221e38 !important ;
+.bg-color-primary {
+  background: linear-gradient(
+    87.61deg,
+    rgba(0, 255, 209, 0.05) 19.18%,
+    rgba(0, 117, 255, 0) 117.19%
+  );
+}
+
+.bg-dialog {
+  background: linear-gradient(
+    88.8deg,
+    rgba(255, 255, 255, 0.05) 6.02%,
+    rgba(153, 153, 153, 0) 83.28%
+  );
+
+  backdrop-filter: blur(100.65178108215332px);
 }
 
 .data-\[state\=checked\]\:bg-primary[data-state="checked"] {
   background-color: #69e2db !important;
+}
+
+.logo {
+  background: linear-gradient(90deg, #57ffde 0%, #effffc 100%);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  font-size: 30px;
 }

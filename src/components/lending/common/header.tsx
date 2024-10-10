@@ -3,7 +3,7 @@ interface HeaderProps {
   className?: string;
 }
 
-export const headerStyles = `text-xs font-bold text-[#8c8c8c]`;
+export const headerStyles = `text-xs font-bold`;
 
 export default function Header({ columns, className }: HeaderProps) {
   return (

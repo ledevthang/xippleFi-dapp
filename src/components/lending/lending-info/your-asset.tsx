@@ -3,7 +3,7 @@ import { AssetType } from "@/types/balance";
 
 function YourAsset({ type }: AssetType) {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2">
       <Badge variant="outline" className="text-sm text-white">
         Balance $1.13
       </Badge>
