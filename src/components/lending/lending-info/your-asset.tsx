@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { AssetType } from "@/types/balance";
+import { AssetType } from "@/types/lending";
 
 function YourAsset({ type }: AssetType) {
   return (

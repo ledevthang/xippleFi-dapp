@@ -14,8 +14,8 @@ function LendingPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-10">
-            <SupplyAssets data={MOCK_SUPPLY_ASSETS} />
-            <BorrowAssets data={MOCK_BORROW_ASSETS} />
+            <SupplyAssets data={MOCK_SUPPLY_ASSETS as never} />
+            <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
           </div>
         </div>
       </div>

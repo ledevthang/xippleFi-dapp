@@ -1,5 +1,4 @@
 import { Switch } from "@/components/ui/switch";
-import { AssetType } from "@/types/balance";
 import { formatCurrency, formatToTwoDecimals } from "@/utils";
 import { columnStyles, YOUR_ASSET_TABLE_HEADER } from "../common/columns";
 import Header from "../common/header";
@@ -8,6 +7,7 @@ import Asset from "../common/asset";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import WithdrawDialog from "../dialog/withdraw-dialog";
 import RepayDialog from "../dialog/repay-dialog";
+import { AssetType } from "@/types/lending";
 
 type YourAssetDetailsProps = AssetType;
 
@@ -21,10 +21,7 @@ function YourAssetDetails({ type }: YourAssetDetailsProps) {
           <DialogTrigger>
             <Row>
               <div className={`${columnStyles} col-span-2`}>
-                <Asset
-                  logo="https://app.aave.com/icons/tokens/pol.svg"
-                  symbol="POL"
-                />
+                <Asset symbol="BTC" />
               </div>
               <div className={`${columnStyles} justify-end`}>
                 <div className="flex flex-col items-end">

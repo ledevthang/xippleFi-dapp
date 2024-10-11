@@ -99,10 +99,18 @@
   );
 }
 
+.bg-color-secondary {
+  background: linear-gradient(
+    309.18deg,
+    rgba(1, 127, 160, 0.2) 0%,
+    rgba(153, 153, 153, 0.027) 93.86%
+  );
+}
+
 .bg-dialog {
   background: linear-gradient(
     88.8deg,
-    rgba(255, 255, 255, 0.05) 6.02%,
+    rgba(255, 255, 255, 0.062) 6.02%,
     rgba(153, 153, 153, 0) 83.28%
   );
 

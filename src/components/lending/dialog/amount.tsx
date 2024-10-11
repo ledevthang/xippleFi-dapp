@@ -17,11 +17,7 @@ function Amount({ label, amount, onChange }: AmountProps) {
           className="flex-1 border-none bg-transparent outline-none"
           placeholder="0.00"
         />
-        <Asset
-          logo="https://app.aave.com/icons/tokens/pol.svg"
-          symbol="POL"
-          className="!gap-2"
-        />
+        <Asset symbol="BNB" className="!gap-2" />
       </div>
       <div className="!m-0 flex justify-between text-xs">
         <span>$0</span>

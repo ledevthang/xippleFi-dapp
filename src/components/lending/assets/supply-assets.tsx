@@ -22,11 +22,11 @@ function SupplyAssets({ data }: SupplyAssetsProps) {
         <Header columns={ASSETS_TO_SUPPLY_HEADER} className="grid-cols-5" />
         <Dialog>
           <div className="flex flex-col gap-3">
-            {data.map(({ logo, symbol, apy, wallet }) => (
-              <DialogTrigger>
-                <Row key={symbol}>
+            {data.map(({ symbol, apy, wallet }) => (
+              <DialogTrigger key={symbol}>
+                <Row>
                   <div className={`${columnStyles} col-span-3`}>
-                    <Asset logo={logo} symbol={symbol} />
+                    <Asset symbol={symbol} />
                   </div>
                   <div className={`${columnStyles} justify-end`}>
                     <p>{formatToTwoDecimals(apy)}%</p>

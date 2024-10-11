@@ -18,15 +18,15 @@ function BorrowAssets({ data }: BorrowAssetsProps) {
         <div className="h-[28px] w-[2px] bg-[#69e2db]"></div>
         <h3 className={`text-xl font-bold`}>Assets to borrow</h3>
       </div>
-      <div className="bg-color-primary flex-1 rounded-sm p-4">
+      <div className="bg-color-secondary flex-1 rounded-sm p-4">
         <Header columns={ASSETS_TO_BORROW_HEADER} className="grid-cols-5" />
         <Dialog>
           <div className="flex flex-col gap-3">
-            {data.map(({ logo, symbol, apy, liquidity }) => (
+            {data.map(({ symbol, apy, liquidity }) => (
               <DialogTrigger key={symbol}>
                 <Row>
                   <div className={`${columnStyles} col-span-3`}>
-                    <Asset logo={logo} symbol={symbol} />
+                    <Asset symbol={symbol} />
                   </div>
                   <div className={`${columnStyles} justify-end`}>
                     <p>{formatToTwoDecimals(apy)}%</p>

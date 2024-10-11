@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { AssetType } from "@/types";
+import { AssetType } from "@/types/lending";
 
 interface ActionsProps extends AssetType {}
 

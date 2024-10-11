@@ -16,6 +16,9 @@ function Header() {
             showAvatar={false}
             showBalance={true}
             theme="retro"
+            customTheme={{
+              "--ck-body-background": `linear-gradient(88.8deg, rgba(255, 255, 255, 0.062) 6.02%, rgba(153, 153, 153, 0) 83.28%)`,
+            }}
           />
         </div>
       </div>
