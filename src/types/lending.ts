@@ -1,15 +1,20 @@
-import { TokenLogo } from ".";
+import { Token } from ".";
 
 export interface AssetType {
   type: "supply" | "borrow";
 }
 
-export interface Asset {
-  symbol: TokenLogo;
+export interface SupplyAsset {
+  id: string;
+  symbol: Token;
+  apy: number;
 }
 
-export interface LendingAssets extends Asset {
-  apy?: number;
+export interface AssetsReponse {
+  assets: SupplyAsset[];
+}
+
+export interface LendingAssets extends SupplyAsset {
   wallet?: number;
   liquidity?: string;
 }

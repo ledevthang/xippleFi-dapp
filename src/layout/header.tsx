@@ -1,7 +1,12 @@
 import Navbar from "./navbar";
 import { ConnectKitButton } from "connectkit";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import useVerifySignature from "@/hooks/use-verify-signature";
 
 function Header() {
+  const { isLoading } = useVerifySignature();
+
   return (
     <div className="stick bg bg-[url('/images/navbar-bg.svg')] bg-contain bg-no-repeat">
       <div className="border-b-1 container mx-auto flex max-h-20 min-h-20 items-center justify-between">
@@ -12,14 +17,18 @@ function Header() {
           <Navbar />
         </div>
         <div className="flex items-center">
-          <ConnectKitButton
-            showAvatar={false}
-            showBalance={true}
-            theme="retro"
-            customTheme={{
-              "--ck-body-background": `linear-gradient(88.8deg, rgba(255, 255, 255, 0.062) 6.02%, rgba(153, 153, 153, 0) 83.28%)`,
-            }}
-          />
+          {isLoading ? (
+            <Button disabled className="!w-[138px]">
+              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <ConnectKitButton
+              showAvatar={false}
+              showBalance={true}
+              theme="retro"
+            />
+          )}
         </div>
       </div>
     </div>

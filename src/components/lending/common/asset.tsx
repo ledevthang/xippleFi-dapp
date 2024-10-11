@@ -1,5 +1,10 @@
 import { TOKEN_LOGO } from "@/constants";
-import { Asset as AssetProps } from "@/types/lending";
+import { Token } from "@/types";
+
+interface AssetProps {
+  symbol: Token;
+  className?: string;
+}
 
 function Asset({
   symbol,

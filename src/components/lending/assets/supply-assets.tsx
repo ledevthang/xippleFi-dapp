@@ -3,12 +3,12 @@ import Asset from "../common/asset";
 import { ASSETS_TO_SUPPLY_HEADER, columnStyles } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
-import { LendingAssets } from "@/types/lending";
+import { SupplyAsset } from "@/types/lending";
 import SupplyDialog from "../dialog/supply-dialog";
 import useDialog from "@/hooks/use-dialog";
 
 interface SupplyAssetsProps {
-  data: LendingAssets[];
+  data: SupplyAsset[];
 }
 
 function SupplyAssets({ data }: SupplyAssetsProps) {
@@ -32,8 +32,8 @@ function SupplyAssets({ data }: SupplyAssetsProps) {
       <div className="bg-color-primary flex-1 rounded-sm p-4">
         <Header columns={ASSETS_TO_SUPPLY_HEADER} className="grid-cols-5" />
         <div className="flex flex-col gap-3">
-          {data.map(({ symbol, apy, wallet }) => (
-            <Row onClick={handleOpenSupplyAssetDialog} key={symbol}>
+          {data.map(({ id, symbol, apy }) => (
+            <Row onClick={handleOpenSupplyAssetDialog} key={id}>
               <div className={`${columnStyles} col-span-3`}>
                 <Asset symbol={symbol} />
               </div>
@@ -42,7 +42,7 @@ function SupplyAssets({ data }: SupplyAssetsProps) {
               </div>
               <div className={`${columnStyles} justify-end`}>
                 <span>
-                  {formatToTwoDecimals(wallet)} {symbol}
+                  {formatToTwoDecimals(0)} {symbol}
                 </span>
               </div>
             </Row>
