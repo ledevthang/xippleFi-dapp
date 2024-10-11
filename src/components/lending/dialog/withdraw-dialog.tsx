@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Amount from "./amount";
-import LendingDialog from ".";
 
 export default function WithdrawDialog() {
   const [amount, setAmount] = useState<number>();
@@ -10,7 +9,7 @@ export default function WithdrawDialog() {
   };
 
   return (
-    <LendingDialog active={!!amount} title="Withdraw POL" footer="Withdraw POL">
+    <>
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Withdraw amount</h4>
         <Amount
@@ -47,6 +46,6 @@ export default function WithdrawDialog() {
           </div>
         </div>
       </div>
-    </LendingDialog>
+    </>
   );
 }
