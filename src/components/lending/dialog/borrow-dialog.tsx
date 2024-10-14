@@ -12,7 +12,12 @@ export default function BorrowDialog() {
     <>
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Borrow amount</h4>
-        <Amount label="Available" amount={amount} onChange={onChangeAmount} />
+        <Amount
+          label="Available"
+          amount={amount}
+          onChange={onChangeAmount}
+          symbol="BNB"
+        />
       </div>
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Borrow stats</h4>

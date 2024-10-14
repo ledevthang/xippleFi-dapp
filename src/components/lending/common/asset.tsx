@@ -17,7 +17,7 @@ function Asset({
       <img
         src={TOKEN_LOGO[symbol]}
         alt={symbol}
-        className="size-8 object-contain"
+        className="!size-8 object-contain"
       />
       <p>{symbol}</p>
     </div>

@@ -1,8 +1,21 @@
 import { useState } from "react";
 import Amount from "./amount";
+import { Token } from "@/types";
+import { formatToTwoDecimals } from "@/utils";
 
-export default function SupplyDialog() {
+export interface SupplyDialogProps {
+  symbol: Token;
+  balance: number;
+  apy: number;
+}
+
+export default function SupplyDialog({
+  symbol,
+  balance,
+  apy,
+}: SupplyDialogProps) {
   const [amount, setAmount] = useState<number>();
+  console.log("amount: ", amount);
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(+e.target.value);
@@ -14,6 +27,8 @@ export default function SupplyDialog() {
         <h4 className="text-sm font-semibold">Supply amount</h4>
         <Amount
           label="Wallet balance"
+          symbol={symbol}
+          balance={balance}
           amount={amount}
           onChange={onChangeAmount}
         />
@@ -24,7 +39,7 @@ export default function SupplyDialog() {
         <div className="mt-4 flex flex-col gap-2">
           <div className="flex justify-between text-xs">
             <span>Supply APY</span>
-            <span>1.48%</span>
+            <span>{formatToTwoDecimals(apy)}%</span>
           </div>
           <div className="flex justify-between text-xs">
             <span>Collateral Factor</span>
@@ -36,7 +51,7 @@ export default function SupplyDialog() {
           </div>
           <div className="flex justify-between text-xs">
             <span>Collateral Balance</span>
-            <span>0.200009 USDT</span>
+            <span>0.00 {symbol}</span>
           </div>
         </div>
       </div>

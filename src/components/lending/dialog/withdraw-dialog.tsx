@@ -13,6 +13,7 @@ export default function WithdrawDialog() {
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Withdraw amount</h4>
         <Amount
+          symbol="BNB"
           label="Supply balance"
           amount={amount}
           onChange={onChangeAmount}
