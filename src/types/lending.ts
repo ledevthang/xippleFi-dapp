@@ -8,6 +8,8 @@ export interface SupplyAsset {
   id: string;
   symbol: Token;
   apy: number;
+  address: `0x${string}`;
+  balance?: number;
 }
 
 export interface AssetsReponse {

@@ -29,13 +29,13 @@ function BorrowAssets({ data }: BorrowAssetsProps) {
         <h3 className={`text-xl font-bold`}>Assets to borrow</h3>
       </div>
       <div className="bg-color-secondary flex-1 rounded-sm p-4">
-        <Header columns={ASSETS_TO_BORROW_HEADER} className="grid-cols-4" />
+        <Header columns={ASSETS_TO_BORROW_HEADER} className="!grid-cols-4" />
         <div className="flex flex-col gap-5">
           {data.map(({ symbol, apy, liquidity }) => (
             <Row
               key={symbol}
               onClick={handleOpenBorrowAssetDialog}
-              className="grid-cols-4"
+              className="!grid-cols-4"
             >
               <div className={`${columnStyles} col-span-2`}>
                 <Asset symbol={symbol} />

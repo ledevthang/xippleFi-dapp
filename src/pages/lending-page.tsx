@@ -11,7 +11,7 @@ import { useContext } from "react";
 function LendingPage() {
   const { isLogin } = useContext(Context);
 
-  const { data: supplyAssets } = useQuery({
+  const { data: supplyAssets, isLoading } = useQuery({
     queryKey: [QUERY_KEY.SUPPLY_ASSETS],
     queryFn: getSupplyAssetsService,
   });
@@ -28,7 +28,10 @@ function LendingPage() {
           )}
 
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-            <SupplyAssets data={supplyAssets?.assets || []} />
+            <SupplyAssets
+              data={supplyAssets?.assets || []}
+              isLoading={isLoading}
+            />
             <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
           </div>
         </div>

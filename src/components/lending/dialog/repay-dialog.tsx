@@ -13,6 +13,7 @@ export default function RepayDialog() {
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Repay amount</h4>
         <Amount
+          symbol="BNB"
           label="Wallet balance"
           amount={amount}
           onChange={onChangeAmount}
