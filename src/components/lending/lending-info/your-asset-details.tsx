@@ -3,7 +3,7 @@ import { formatCurrency, formatToTwoDecimals } from "@/utils";
 import { columnStyles, YOUR_ASSET_TABLE_HEADER } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
-import Asset from "../common/asset";
+import Asset from "@/components/common/asset";
 import WithdrawDialog from "../dialog/withdraw-dialog";
 import { AssetType } from "@/types/lending";
 import useDialog from "@/hooks/use-dialog";

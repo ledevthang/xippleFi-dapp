@@ -1,6 +1,7 @@
 import { Token } from "@/types";
 
-export const dialogBodyStyles = "bg-dialog border-none sm:max-w-[420px]";
+export const dialogBodyStyles =
+  "bg-dialog border-none sm:max-w-[420px] max-w-[360px]";
 
 export const ASSETS = {
   Btc: {

@@ -1,5 +1,5 @@
+import Asset from "@/components/common/asset";
 import { Token } from "@/types";
-import Asset from "../common/asset";
 
 interface AmountProps {
   label: string;

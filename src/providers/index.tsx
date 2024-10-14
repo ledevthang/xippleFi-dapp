@@ -24,6 +24,7 @@ export default function AppProviders({
               customTheme={{
                 "--ck-font-family": '"Oxanium", sans-serif',
                 "--ck-body-background": `#070707 linear-gradient(88.8deg, rgba(255, 255, 255, 0.062) 6.02%, rgba(153, 153, 153, 0) 83.28%)`,
+                "--ck-modal-box-shadow": "1px 2px #ebebef14",
               }}
             >
               {children}
