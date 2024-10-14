@@ -1,11 +1,11 @@
 import { formatToTwoDecimals } from "@/utils";
-import Asset from "../common/asset";
 import { ASSETS_TO_BORROW_HEADER, columnStyles } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
 import { LendingAssets } from "@/types/lending";
 import BorrowDialog from "../dialog/borrow-dialog";
 import useDialog from "@/hooks/use-dialog";
+import Asset from "@/components/common/asset";
 
 interface BorrowAssetsProps {
   data: LendingAssets[];

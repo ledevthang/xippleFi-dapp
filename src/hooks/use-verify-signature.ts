@@ -85,6 +85,7 @@ function useVerifySignature() {
     },
     onDisconnect: () => {
       onLogin(false);
+      localStorage.clear();
     },
   });
 

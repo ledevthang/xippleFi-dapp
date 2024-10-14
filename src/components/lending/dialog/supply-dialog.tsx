@@ -15,7 +15,6 @@ export default function SupplyDialog({
   apy,
 }: SupplyDialogProps) {
   const [amount, setAmount] = useState<number>();
-  console.log("amount: ", amount);
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(+e.target.value);
