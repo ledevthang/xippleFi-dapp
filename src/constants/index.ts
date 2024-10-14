@@ -1,3 +1,5 @@
+import { Token } from "@/types";
+
 export const dialogBodyStyles = "bg-dialog border-none sm:max-w-[420px]";
 
 export const ASSETS = {
@@ -47,3 +49,24 @@ export const TOKEN_LOGO = {
   BNB: "/assets/BNB.svg",
   USDT: "/assets/USDT.svg",
 };
+
+export const TOKENS: { symbol: Token }[] = [
+  {
+    symbol: "XRP",
+  },
+  {
+    symbol: "BTC",
+  },
+  {
+    symbol: "ETH",
+  },
+  {
+    symbol: "TRX",
+  },
+  {
+    symbol: "BNB",
+  },
+  {
+    symbol: "USDT",
+  },
+];

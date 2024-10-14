@@ -1,3 +1,4 @@
+import { Context } from "@/providers/app-context";
 import {
   getMessageService,
   verifySignatureService,
@@ -5,7 +6,7 @@ import {
 import { SECURE_SROGARE } from "@/types";
 import secureStorage from "@/utils/secureStorage";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Account } from "viem";
 import {
   useAccount,
@@ -15,6 +16,7 @@ import {
 } from "wagmi";
 
 function useVerifySignature() {
+  const { onLogin } = useContext(Context);
   const [isLoading, setLoading] = useState<boolean>();
   const [currentAddress, setCurrentAddress] = useState<string>();
   const { address, isConnected, isConnecting } = useAccount();
@@ -27,9 +29,11 @@ function useVerifySignature() {
     mutationFn: verifySignatureService,
     onSuccess: (data) => {
       secureStorage.setItem(SECURE_SROGARE.ACCESS_TOKEN, data.accessToken);
+      onLogin(true);
     },
     onError: () => {
       disconnect();
+      onLogin(false);
     },
   });
 
@@ -58,6 +62,7 @@ function useVerifySignature() {
       setLoading(false);
       disconnect();
       localStorage.clear();
+      onLogin(false);
     }
   };
 
@@ -74,7 +79,12 @@ function useVerifySignature() {
           localStorage.clear();
           throw new Error();
         }
+      } else {
+        onLogin(true);
       }
+    },
+    onDisconnect: () => {
+      onLogin(false);
     },
   });
 
@@ -89,7 +99,10 @@ function useVerifySignature() {
   }, [address, currentAddress]);
 
   useEffect(() => {
-    if (!accessToken) disconnect();
+    if (!accessToken) {
+      disconnect();
+      onLogin(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
@@ -97,7 +110,9 @@ function useVerifySignature() {
     if (!isConnected) {
       localStorage.clear();
       setCurrentAddress(undefined);
+      onLogin(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected]);
 
   return {

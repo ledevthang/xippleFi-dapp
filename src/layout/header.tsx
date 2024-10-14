@@ -9,7 +9,7 @@ function Header() {
 
   return (
     <div className="stick bg bg-[url('/images/navbar-bg.svg')] bg-contain bg-no-repeat">
-      <div className="border-b-1 container mx-auto flex max-h-20 min-h-20 items-center justify-between">
+      <div className="border-b-1 container mx-auto flex max-h-20 min-h-20 items-center justify-between px-3">
         <div className="flex cursor-pointer items-center gap-20">
           <a href="/" className="logo">
             XippleFi

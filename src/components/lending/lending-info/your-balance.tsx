@@ -15,7 +15,7 @@ function YourBalance({ type }: YourBalanceProps) {
     type === "supply" ? "bg-color-primary" : "bg-color-secondary";
 
   return (
-    <div className={`${bgStyles} flex-1 rounded-sm p-4`}>
+    <div className={`${bgStyles} rounded-sm p-4`}>
       <div>
         <h3 className="mb-8 text-lg font-bold">{title}</h3>
         <YourAsset type={type} />

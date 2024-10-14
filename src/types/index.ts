@@ -25,3 +25,8 @@ export enum SECURE_SROGARE {
 }
 
 export type Token = keyof typeof TOKEN_LOGO;
+
+export interface AppContextProps {
+  isLogin: boolean;
+  onLogin: (isLogin: boolean) => void;
+}

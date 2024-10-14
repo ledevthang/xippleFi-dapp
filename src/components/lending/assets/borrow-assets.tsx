@@ -23,17 +23,21 @@ function BorrowAssets({ data }: BorrowAssetsProps) {
   };
 
   return (
-    <div className="flex !h-fit flex-1 flex-col">
+    <div className="mt-10 flex !h-fit flex-1 flex-col">
       <div className="mb-7 flex items-center gap-9">
         <div className="h-[28px] w-[2px] bg-[#69e2db]"></div>
         <h3 className={`text-xl font-bold`}>Assets to borrow</h3>
       </div>
       <div className="bg-color-secondary flex-1 rounded-sm p-4">
-        <Header columns={ASSETS_TO_BORROW_HEADER} className="grid-cols-5" />
-        <div className="flex flex-col gap-3">
+        <Header columns={ASSETS_TO_BORROW_HEADER} className="grid-cols-4" />
+        <div className="flex flex-col gap-5">
           {data.map(({ symbol, apy, liquidity }) => (
-            <Row key={symbol} onClick={handleOpenBorrowAssetDialog}>
-              <div className={`${columnStyles} col-span-3`}>
+            <Row
+              key={symbol}
+              onClick={handleOpenBorrowAssetDialog}
+              className="grid-cols-4"
+            >
+              <div className={`${columnStyles} col-span-2`}>
                 <Asset symbol={symbol} />
               </div>
               <div className={`${columnStyles} justify-end`}>

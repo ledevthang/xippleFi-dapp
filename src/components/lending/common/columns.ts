@@ -42,7 +42,7 @@ export const YOUR_ASSET_TABLE_HEADER = {
 export const ASSETS_TO_SUPPLY_HEADER = [
   {
     label: "ASSETS",
-    className: "col-span-3",
+    className: "col-span-2",
   },
   {
     label: "SUPPLY APY",
@@ -57,7 +57,7 @@ export const ASSETS_TO_SUPPLY_HEADER = [
 export const ASSETS_TO_BORROW_HEADER = [
   {
     label: "ASSETS",
-    className: "col-span-3",
+    className: "col-span-2",
   },
   {
     label: "BORROW APY",
