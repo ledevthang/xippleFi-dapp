@@ -1,4 +1,4 @@
-import { Token } from "@/types";
+import { APP_ROUTE, Token } from "@/types";
 
 export const dialogBodyStyles =
   "bg-dialog border-none sm:max-w-[420px] max-w-[360px]";
@@ -69,5 +69,29 @@ export const TOKENS: { symbol: Token }[] = [
   },
   {
     symbol: "USDT",
+  },
+];
+
+export const BREAKPOINTS = {
+  0: "xs",
+  640: "sm",
+  768: "md",
+  1024: "lg",
+  1280: "xl",
+  1536: "2xl",
+} as const;
+
+export const NAVBARS = [
+  {
+    to: APP_ROUTE.HOME,
+    label: "LENDING",
+  },
+  {
+    to: APP_ROUTE.STAKE,
+    label: "STAKE",
+  },
+  {
+    to: APP_ROUTE.SWAP,
+    label: "SWAP",
   },
 ];

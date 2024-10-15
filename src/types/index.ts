@@ -1,4 +1,4 @@
-import { TOKEN_LOGO } from "@/constants";
+import { BREAKPOINTS, TOKEN_LOGO } from "@/constants";
 
 // common
 export enum APP_ROUTE {
@@ -30,3 +30,5 @@ export interface AppContextProps {
   isLogin: boolean;
   onLogin: (isLogin: boolean) => void;
 }
+
+export type Breakpoints = (typeof BREAKPOINTS)[keyof typeof BREAKPOINTS];

@@ -7,6 +7,7 @@ import { QUERY_KEY } from "@/types";
 import { getSupplyAssetsService } from "@/services/lending.service";
 import { Context } from "@/providers/app-context";
 import { useContext } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function LendingPage() {
   const { isLogin } = useContext(Context);
@@ -17,9 +18,9 @@ function LendingPage() {
   });
 
   return (
-    <div className="flex-1 bg-[url('/images/navbar-bg.svg')] bg-contain bg-no-repeat">
+    <div className="bg-image flex flex-1 pb-5 sm:items-center">
       <div className="container mx-auto my-4 flex flex-1 px-3">
-        <div className="flex flex-1 flex-col gap-8">
+        <div className="hidden flex-1 flex-col gap-8 sm:flex">
           {isLogin && (
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
               <YourBalance type="supply" />
@@ -35,6 +36,42 @@ function LendingPage() {
             <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
           </div>
         </div>
+
+        <Tabs defaultValue="supplies" className="w-full sm:hidden">
+          <TabsList className="bg-dialog grid grid-cols-2">
+            <TabsTrigger
+              value="supplies"
+              className="bg-color-primary tabs-trigger"
+            >
+              Account
+            </TabsTrigger>
+            <TabsTrigger
+              value="borrows"
+              className="bg-color-secondary tabs-trigger"
+            >
+              Password
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="supplies">
+            <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
+              {isLogin && <YourBalance type="supply" />}
+            </div>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+              <SupplyAssets
+                data={supplyAssets?.assets || []}
+                isLoading={isLoading}
+              />
+            </div>
+          </TabsContent>
+          <TabsContent value="borrows">
+            <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
+              {isLogin && <YourBalance type="borrow" />}
+            </div>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+              <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

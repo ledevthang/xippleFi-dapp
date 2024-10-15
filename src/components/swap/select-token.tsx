@@ -10,7 +10,7 @@ import { Token as TokenType } from "@/types";
 
 function SelectToken() {
   return (
-    <Select defaultValue="apple">
+    <Select>
       <SelectTrigger className="w-[150px] rounded-[8px] border-none bg-[#252B36] outline-none">
         <SelectValue placeholder="Select token" />
       </SelectTrigger>
