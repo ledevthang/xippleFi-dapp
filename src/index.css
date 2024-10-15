@@ -91,6 +91,10 @@
   background: #070707;
 }
 
+.body {
+  min-height: calc(-523px + 100vh);
+}
+
 .bg-color-primary {
   background: linear-gradient(
     87.61deg,
@@ -148,3 +152,24 @@
 
   border: 1px solid #ebebef14;
 }
+
+.bg-image {
+  background-image: url("/images/navbar-bg.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top;
+}
+
+.bg-swap {
+  background-image: url("/images/navbar-bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.tabs-trigger {
+  color: #ffffff;
+}
+
+/* .tabs-trigger[data-state="active"] {
+  color: #ffffff !important;
+} */

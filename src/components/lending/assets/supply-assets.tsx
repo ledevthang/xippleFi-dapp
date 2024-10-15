@@ -37,11 +37,7 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
           let balance = 0;
           try {
             if (myAddress)
-              balance = await getBalanceByToken(
-                myAddress,
-                "0x21fa8610CBD3a1a45bCB1DbE933052EBF9e3dd52",
-              );
-            console.log("balance: ", balance);
+              balance = await getBalanceByToken(myAddress, address);
             return {
               ...rest,
               balance,

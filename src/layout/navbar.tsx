@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function Navbar() {
   return (
-    <ul className="flex cursor-pointer items-center gap-7 font-semibold text-white">
+    <ul className="hidden cursor-pointer items-center gap-7 font-semibold text-white sm:flex">
       <NavLink
         to={APP_ROUTE.HOME}
         className={({ isActive }) => (isActive ? "text-[#69e2db]" : "")}
