@@ -5,12 +5,12 @@ import { MOCK_BORROW_ASSETS } from "@/constants/mock";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "@/types";
 import { getSupplyAssetsService } from "@/services/lending.service";
-import { Context } from "@/providers/app-context";
-import { useContext } from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAccount } from "wagmi";
 
 function LendingPage() {
-  const { isLogin } = useContext(Context);
+  const { isConnected } = useAccount();
 
   const { data: supplyAssets, isLoading } = useQuery({
     queryKey: [QUERY_KEY.SUPPLY_ASSETS],
@@ -21,7 +21,7 @@ function LendingPage() {
     <div className="bg-image flex flex-1 pb-5 sm:items-center">
       <div className="container mx-auto my-4 flex flex-1 px-3">
         <div className="hidden flex-1 flex-col gap-8 sm:flex">
-          {isLogin && (
+          {isConnected && (
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
               <YourBalance type="supply" />
               <YourBalance type="borrow" />
@@ -54,7 +54,7 @@ function LendingPage() {
           </TabsList>
           <TabsContent value="supplies">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
-              {isLogin && <YourBalance type="supply" />}
+              {isConnected && <YourBalance type="supply" />}
             </div>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
               <SupplyAssets
@@ -65,7 +65,7 @@ function LendingPage() {
           </TabsContent>
           <TabsContent value="borrows">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
-              {isLogin && <YourBalance type="borrow" />}
+              {isConnected && <YourBalance type="borrow" />}
             </div>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
               <BorrowAssets data={MOCK_BORROW_ASSETS as never} />

@@ -14,7 +14,7 @@ export const DialogContext = createContext<DialogContextProps>({} as never);
 
 function DialogProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<DialogContextState>({ open: false });
-  const { open, title, description, content, footer } = state;
+  const { open, title, description, content, footer, onSubmit } = state;
 
   const onChange = (state: DialogContextState) => {
     setState(state);
@@ -26,6 +26,7 @@ function DialogProvider({ children }: PropsWithChildren) {
 
   const context = {
     context: state,
+    onClose,
     onChange: onChange,
   };
 
@@ -50,7 +51,12 @@ function DialogProvider({ children }: PropsWithChildren) {
           </DialogHeader>
           {content}
           <DialogFooter className="mt-6 flex-1 !justify-center">
-            <Button type="submit" className="w-full" disabled={!footer}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={!footer}
+              onClick={onSubmit}
+            >
               {footer || "Enter an amount"}
             </Button>
           </DialogFooter>

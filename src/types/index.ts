@@ -1,4 +1,5 @@
-import { BREAKPOINTS, TOKEN_LOGO } from "@/constants";
+import { BREAKPOINTS } from "@/constants";
+import { TOKEN_LOGO } from "@/constants/swap/token";
 
 // common
 export enum APP_ROUTE {
@@ -17,6 +18,8 @@ export enum QUERY_KEY {
   SUPPLY_ASSETS = "SUPPLY_ASSETS",
   AUTH_MESSAGE = "AUTH_MESSAGE",
   AUTH_VERIFY_SIGNATURE = "AUTH_VERIFY_SIGNATURE",
+  TOKEN_IN = "TOKEN_IN",
+  TOKEN_OUT = "TOKEN_OUT",
 }
 
 export enum SECURE_SROGARE {

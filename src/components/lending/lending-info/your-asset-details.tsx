@@ -1,5 +1,5 @@
 import { Switch } from "@/components/ui/switch";
-import { formatCurrency, formatToTwoDecimals } from "@/utils";
+import { formatCurrency, formatToDecimals } from "@/utils";
 import { columnStyles, YOUR_ASSET_TABLE_HEADER } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
@@ -44,7 +44,7 @@ function YourAssetDetails({ type }: YourAssetDetailsProps) {
           </div>
           <div className={`${columnStyles} justify-end`}>
             <div className="flex flex-col items-end">
-              <p>{formatToTwoDecimals(3)}</p>
+              <p>{formatToDecimals(3)}</p>
               <p className="text-xs">{formatCurrency(2.3)}</p>
             </div>
           </div>

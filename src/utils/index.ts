@@ -21,8 +21,8 @@ export function formatCurrency(amount: number) {
   return formatter.format(amount);
 }
 
-export function formatToTwoDecimals(amount: number = 0) {
-  return amount.toFixed(2);
+export function formatToDecimals(amount: number = 0, decimas?: number) {
+  return amount.toFixed(decimas || 2);
 }
 
 export async function getBalanceByToken(
@@ -33,5 +33,14 @@ export async function getBalanceByToken(
     address,
     token,
   });
-  return Number(balance.value) || 0;
+  console.log("balance: ", balance);
+
+  return Number(balance.formatted) || 0;
+}
+
+export function truncateCurrency(amount: number) {
+  if (amount > 9999990) return `${(amount / 1000000000).toFixed(2)}B`;
+  if (amount > 999999) return `${(amount / 1000000).toFixed(2)}M`;
+  if (amount > 9999) return `${(amount / 1000).toFixed(2)}K`;
+  return amount.toFixed(2);
 }

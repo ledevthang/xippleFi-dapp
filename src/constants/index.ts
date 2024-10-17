@@ -1,7 +1,7 @@
-import { APP_ROUTE, Token } from "@/types";
+import { APP_ROUTE } from "@/types";
 
 export const dialogBodyStyles =
-  "bg-dialog border-none sm:max-w-[420px] max-w-[360px]";
+  "bg-dialog border-none sm:max-w-[420px] max-w-[360px] z-50";
 
 export const ASSETS = {
   Btc: {
@@ -41,36 +41,6 @@ export const ASSETS = {
     threshold: 0.25,
   },
 };
-
-export const TOKEN_LOGO = {
-  BTC: "/assets/BTC.svg",
-  ETH: "/assets/ETH.svg",
-  XRP: "/assets/XRP.svg",
-  TRX: "/assets/TRX.svg",
-  BNB: "/assets/BNB.svg",
-  USDT: "/assets/USDT.svg",
-};
-
-export const TOKENS: { symbol: Token }[] = [
-  {
-    symbol: "XRP",
-  },
-  {
-    symbol: "BTC",
-  },
-  {
-    symbol: "ETH",
-  },
-  {
-    symbol: "TRX",
-  },
-  {
-    symbol: "BNB",
-  },
-  {
-    symbol: "USDT",
-  },
-];
 
 export const BREAKPOINTS = {
   0: "xs",

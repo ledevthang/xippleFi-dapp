@@ -1,4 +1,4 @@
-import { formatToTwoDecimals } from "@/utils";
+import { formatToDecimals } from "@/utils";
 import { ASSETS_TO_BORROW_HEADER, columnStyles } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
@@ -41,7 +41,7 @@ function BorrowAssets({ data }: BorrowAssetsProps) {
                 <Asset symbol={symbol} />
               </div>
               <div className={`${columnStyles} justify-end`}>
-                <p>{formatToTwoDecimals(apy)}%</p>
+                <p>{formatToDecimals(apy)}%</p>
               </div>
               <div className={`${columnStyles} justify-end`}>
                 <span>{liquidity}</span>

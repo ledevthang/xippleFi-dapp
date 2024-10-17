@@ -6,9 +6,11 @@ export interface DialogContextState {
   description?: string;
   content?: ReactNode;
   footer?: string;
+  onSubmit?: () => void;
 }
 
 export interface DialogContextProps {
   context: DialogContextState;
+  onClose: () => void;
   onChange: (data: DialogContextState) => void;
 }
