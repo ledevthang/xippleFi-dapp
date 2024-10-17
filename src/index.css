@@ -114,11 +114,7 @@
 }
 
 .bg-dialog {
-  background: linear-gradient(
-    88.8deg,
-    rgba(255, 255, 255, 0.062) 6.02%,
-    rgba(153, 153, 153, 0) 83.28%
-  );
+  background: #071017;
 
   backdrop-filter: blur(100.65178108215332px);
   border: 1px solid #ebebef14;
