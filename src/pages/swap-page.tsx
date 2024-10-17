@@ -272,8 +272,8 @@ function SwapPage() {
   return (
     <div className="bg-swap flex-1 pb-10">
       <div className="container mx-auto flex h-full w-full">
-        <div className="m-auto w-[370px] rounded bg-[#252B36] p-4 sm:w-[472px]">
-          <div>
+        <div className="m-auto mt-5 flex h-full items-center rounded">
+          <div className="w-[350px] bg-[#252B36] p-4 sm:w-[472px]">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-2xl font-bold">Swap</h3>
             </div>

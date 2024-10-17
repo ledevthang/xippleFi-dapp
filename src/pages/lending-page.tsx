@@ -43,13 +43,13 @@ function LendingPage() {
               value="supplies"
               className="bg-color-primary tabs-trigger"
             >
-              Account
+              Your supplies
             </TabsTrigger>
             <TabsTrigger
               value="borrows"
               className="bg-color-secondary tabs-trigger"
             >
-              Password
+              Your borrows
             </TabsTrigger>
           </TabsList>
           <TabsContent value="supplies">
