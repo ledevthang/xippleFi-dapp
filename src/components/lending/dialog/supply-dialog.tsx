@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Amount from "./amount";
 import { Token } from "@/types";
-import { formatToTwoDecimals } from "@/utils";
+import { formatToDecimals } from "@/utils";
 
 export interface SupplyDialogProps {
   symbol: Token;
@@ -38,7 +38,7 @@ export default function SupplyDialog({
         <div className="mt-4 flex flex-col gap-2">
           <div className="flex justify-between text-xs">
             <span>Supply APY</span>
-            <span>{formatToTwoDecimals(apy)}%</span>
+            <span>{formatToDecimals(apy)}%</span>
           </div>
           <div className="flex justify-between text-xs">
             <span>Collateral Factor</span>

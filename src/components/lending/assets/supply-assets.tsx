@@ -1,4 +1,4 @@
-import { formatToTwoDecimals, getBalanceByToken } from "@/utils";
+import { formatToDecimals, getBalanceByToken, truncateCurrency } from "@/utils";
 import Asset from "@/components/common/asset";
 import { ASSETS_TO_SUPPLY_HEADER, columnStyles } from "../common/columns";
 import Header from "../common/header";
@@ -16,6 +16,7 @@ interface SupplyAssetsProps {
 }
 
 function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
+  console.log("data: ", data);
   const { onChange } = useDialog();
   const { address: myAddress } = useAccount();
   const [mappedBalanceData, setMappedBalanceData] = useState<SupplyAsset[]>([]);
@@ -86,31 +87,33 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
                   </div>
                 </Row>
               ))
-            : mappedBalanceData.map(({ id, symbol, apy, balance }) => (
-                <Row
-                  onClick={() =>
-                    handleOpenSupplyAssetDialog({
-                      symbol,
-                      balance: balance || 0,
-                      apy,
-                    })
-                  }
-                  key={id}
-                  className="!grid-cols-4"
-                >
-                  <div className={`${columnStyles} col-span-2`}>
-                    <Asset symbol={symbol} />
-                  </div>
-                  <div className={`${columnStyles} justify-end`}>
-                    <p>{formatToTwoDecimals(apy)}%</p>
-                  </div>
-                  <div className={`${columnStyles} justify-end`}>
-                    <span>
-                      {formatToTwoDecimals(balance)} {symbol}
-                    </span>
-                  </div>
-                </Row>
-              ))}
+            : mappedBalanceData.map(({ id, symbol, apy, balance }) => {
+                return (
+                  <Row
+                    onClick={() =>
+                      handleOpenSupplyAssetDialog({
+                        symbol,
+                        balance: balance || 0,
+                        apy,
+                      })
+                    }
+                    key={id}
+                    className="!grid-cols-4"
+                  >
+                    <div className={`${columnStyles} col-span-2`}>
+                      <Asset symbol={symbol} />
+                    </div>
+                    <div className={`${columnStyles} justify-end`}>
+                      <p>{formatToDecimals(apy)}%</p>
+                    </div>
+                    <div className={`${columnStyles} justify-end`}>
+                      <span>
+                        {truncateCurrency(+balance! || 0)} {symbol}
+                      </span>
+                    </div>
+                  </Row>
+                );
+              })}
         </div>
       </div>
     </div>

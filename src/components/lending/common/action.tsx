@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { AssetType } from "@/types/lending";
 
-interface ActionsProps extends AssetType {}
+type ActionsProps = AssetType;
 
 function Action({ type }: ActionsProps) {
   const label = type === "supply" ? "Withdraw" : "Repay";

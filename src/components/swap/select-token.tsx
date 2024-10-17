@@ -5,18 +5,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TOKEN_LOGO, TOKENS } from "@/constants";
+import { TOKEN_LOGO, TOKENS } from "@/constants/swap/token";
 import { Token as TokenType } from "@/types";
 
-function SelectToken() {
+interface SelectTokenProps {
+  value?: TokenType;
+  onValueChange: (value: TokenType) => void;
+}
+
+function SelectToken({ value, onValueChange }: SelectTokenProps) {
   return (
-    <Select>
+    <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className="w-[150px] rounded-[8px] border-none bg-[#252B36] outline-none">
         <SelectValue placeholder="Select token" />
       </SelectTrigger>
       <SelectContent>
         {TOKENS.map(({ symbol }) => (
-          <SelectItem value={symbol}>
+          <SelectItem value={symbol} key={symbol}>
             <Token symbol={symbol} />
           </SelectItem>
         ))}

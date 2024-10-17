@@ -1,4 +1,4 @@
-import { TOKEN_LOGO } from "@/constants";
+import { TOKEN_LOGO } from "@/constants/swap/token";
 import { Token } from "@/types";
 
 interface AssetProps {
