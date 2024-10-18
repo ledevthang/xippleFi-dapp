@@ -5,6 +5,7 @@ export const TOKEN_LOGO = {
   BTC: "/assets/BTC.svg",
   ETH: "/assets/ETH.svg",
   XRP: "/assets/XRP.svg",
+  WXRP: "/assets/XRP.svg",
   TRX: "/assets/TRX.svg",
   BNB: "/assets/BNB.svg",
   USDT: "/assets/USDT.svg",
@@ -23,27 +24,21 @@ export const TOKEN_IDS = {
 export const TOKENS: { symbol: Token }[] = [
   {
     symbol: "XRP",
-    //  address: "0x4c95a9ff405a7eb8a8b5526021178fc6f8f1e1ab",
   },
   {
     symbol: "BTC",
-    //  address: "0x06d7354F56209fa461B27A173316013EcC4a4c99",
   },
   {
     symbol: "ETH",
-    //  address: "0x78AE63017E18520cf63CbA0a5CF190d7f04Cb3f6",
   },
   {
     symbol: "TRX",
-    //  address: "0x880e0C475DeD4214De466891c5FBD61747b67083",
   },
   {
     symbol: "BNB",
-    //  address: "0xe2C179BB9e31Cd6f16142D1C8d2dDB7458b371Ca",
   },
   {
     symbol: "USDT",
-    //  address: "0xcD84fcd2964612D1585F1494B8Ed4F1Ae29D32AC",
   },
 ];
 
