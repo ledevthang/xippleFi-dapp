@@ -3,12 +3,13 @@ import { Button } from "../ui/button";
 import { Token } from "@/types";
 import { useWatchAsset } from "wagmi";
 import { TOKENS_ADDRESS } from "@/constants/swap/token";
+import { Address } from "viem";
 
 interface SuccessDialogProps {
   amount: string;
   symbolIn: Token;
   symbolOut: Token;
-  txHash: string;
+  txHash?: Address;
 }
 
 function SuccessDialog({
@@ -24,7 +25,7 @@ function SuccessDialog({
     watchAsset({
       type: "ERC20",
       options: {
-        address: TOKENS_ADDRESS[symbolOut],
+        address: TOKENS_ADDRESS[symbolOut] as string,
         symbol: symbolOut,
         decimals: 18,
       },

@@ -21,8 +21,9 @@ export function formatCurrency(amount: number) {
   return formatter.format(amount);
 }
 
-export function formatToDecimals(amount: number = 0, decimas?: number) {
-  return amount.toFixed(decimas || 2);
+export function formatToDecimals(amount?: number, decimas?: number) {
+  if (amount) return amount.toFixed(decimas || 2);
+  return "0";
 }
 
 export async function getBalanceByToken(

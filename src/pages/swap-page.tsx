@@ -1,6 +1,5 @@
 import SelectToken from "@/components/swap/select-token";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   TOKEN_IDS,
   TOKENS_ADDRESS,
@@ -13,54 +12,43 @@ import { formatToDecimals } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { formatEther, parseEther } from "viem";
-import {
-  useAccount,
-  useBalance,
-  useReadContract,
-  useTransactionConfirmations,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useAccount, useBalance, useReadContract } from "wagmi";
 import { tokenToUsd } from "@/utils/swap";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useDialog from "@/hooks/use-dialog";
 import SuccessDialog from "@/components/swap/success-dialog";
+import { ConnectKitButton } from "connectkit";
+import useTransactions from "@/hooks/use-transactions";
 
 function SwapPage() {
+  // state
   const [amountIn, setAmountIn] = useState<string>("");
   const [amountOut, setAmountOut] = useState<string>("");
   const [symbolIn, setSymbolIn] = useState<Token>("XRP");
-  const [symbolOut, setSymbolOut] = useState<Token>("USDT");
-
+  const [symbolOut, setSymbolOut] = useState<Token>();
   const [isSwap, setSwap] = useState(false);
 
+  // hook
   const { onChange, onClose } = useDialog();
+  const { receipt, confirm, isLoading, isSuccess, writeContract } =
+    useTransactions();
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const { data: balanceIn } = useBalance({
     address: address,
     token: TOKENS_ADDRESS[symbolIn],
+    query: {
+      refetchInterval: 20000,
+    },
   });
 
   const { data: balanceOut } = useBalance({
     address: address,
-    token: TOKENS_ADDRESS[symbolOut],
-  });
-
-  const { data: hash, writeContract, isPending } = useWriteContract();
-
-  const {
-    data: receipt,
-    isFetching,
-    isLoading,
-    isSuccess,
-  } = useWaitForTransactionReceipt({
-    hash: hash,
-  });
-
-  const { data: confirm } = useTransactionConfirmations({
-    hash: receipt?.transactionHash,
+    token: TOKENS_ADDRESS[symbolOut!],
+    query: {
+      refetchInterval: 20000,
+    },
   });
 
   const {
@@ -78,10 +66,11 @@ function SwapPage() {
     functionName: "getAmountsOut",
     args: [
       Number(parseEther(amountIn, "wei")),
-      [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut]],
+      [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut!]],
     ],
   });
 
+  // query
   const { data: tokenInInfo } = useQuery({
     queryKey: [QUERY_KEY.TOKEN_IN, { symbol: symbolIn }],
     queryFn: () => getAssetByIdService(TOKEN_IDS[symbolIn]),
@@ -90,31 +79,18 @@ function SwapPage() {
 
   const { data: tokenOutInfo } = useQuery({
     queryKey: [QUERY_KEY.TOKEN_OUT, { symbol: symbolOut }],
-    queryFn: () => getAssetByIdService(TOKEN_IDS[symbolOut]),
+    queryFn: () => getAssetByIdService(TOKEN_IDS[symbolOut!]),
     enabled: !!symbolOut,
   });
 
-  const tokenInToUsd = useMemo(() => {
-    if (tokenInInfo && amountIn) {
-      return tokenToUsd(tokenInInfo?.asset.realTimePrice, amountIn);
-    }
-    return 0;
-  }, [amountIn, tokenInInfo]);
-
-  const tokenOutToUsd = useMemo(() => {
-    if (tokenOutInfo && amountOut) {
-      return tokenToUsd(tokenOutInfo?.asset.realTimePrice, amountOut);
-    }
-    return 0;
-  }, [amountOut, tokenOutInfo]);
-
+  // function
   const handleSelectAddressIn = (symbol: Token) => {
     if (symbol === symbolOut) setSymbolOut(symbolIn);
     setSymbolIn(symbol);
   };
 
   const handleSelectAddressOut = (symbol: Token) => {
-    if (symbol === symbolIn) setSymbolIn(symbolOut);
+    if (symbol === symbolIn) setSymbolIn(symbolOut!);
     setSymbolOut(symbol);
   };
 
@@ -154,15 +130,39 @@ function SwapPage() {
         args: [
           (amountsOut as never)[1],
           (amountsOut as never)[0],
-          [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut]],
+          [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut!]],
           address,
           newTimestamp,
         ],
       });
   };
 
+  // memoized value
+  const tokenInToUsd = useMemo(() => {
+    if (tokenInInfo && amountIn) {
+      return tokenToUsd(tokenInInfo?.asset.realTimePrice, amountIn);
+    }
+    return 0;
+  }, [amountIn, tokenInInfo]);
+
+  const tokenOutToUsd = useMemo(() => {
+    if (tokenOutInfo && amountOut) {
+      return tokenToUsd(tokenOutInfo?.asset.realTimePrice, amountOut);
+    }
+    return 0;
+  }, [amountOut, tokenOutInfo]);
+
   const Action = useMemo(() => {
-    if (isFetching || isPending || isLoading || (confirm && !confirm))
+    if (!isConnected)
+      return (
+        <ConnectKitButton.Custom>
+          {({ show }) => {
+            return <Button onClick={show}>Connect wallet</Button>;
+          }}
+        </ConnectKitButton.Custom>
+      );
+
+    if (isLoading || (confirm && !confirm))
       return (
         <Button disabled className="h-11 w-full">
           <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
@@ -222,8 +222,6 @@ function SwapPage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    isFetching,
-    isPending,
     isLoading,
     isFetchingAllowance,
     confirm,
@@ -249,7 +247,7 @@ function SwapPage() {
           <SuccessDialog
             amount={amountIn}
             symbolIn={symbolIn}
-            symbolOut={symbolOut}
+            symbolOut={symbolOut!}
             txHash={receipt?.transactionHash}
           />
         ),
@@ -268,6 +266,12 @@ function SwapPage() {
     if (!confirm) return;
     refetchAllowance();
   }, [confirm, refetchAllowance]);
+
+  useEffect(() => {
+    if (symbolIn && symbolOut && symbolIn === "XRP" && symbolOut === "WXRP") {
+      setAmountOut(amountIn);
+    }
+  }, [amountIn, symbolIn, symbolOut]);
 
   return (
     <div className="bg-swap flex-1 pb-10">
@@ -307,22 +311,17 @@ function SwapPage() {
                   <div className="!m-0 flex justify-between pt-3 text-sm">
                     <span>$ {tokenInToUsd}</span>
                     <div>
-                      {balanceIn ? (
-                        <>
-                          <span>
-                            Balance: {formatToDecimals(+balanceIn?.formatted)}{" "}
-                            {balanceIn?.symbol}
-                          </span>
-                          <span
-                            onClick={handleSetMaxTokenAmount}
-                            className="ml-2 cursor-pointer font-semibold hover:opacity-90"
-                          >
-                            MAX
-                          </span>
-                        </>
-                      ) : (
-                        <Skeleton className="h-4 w-20 bg-red-50" />
-                      )}
+                      <span>
+                        Balance:{" "}
+                        {formatToDecimals(Number(balanceIn?.formatted))}{" "}
+                        {balanceIn?.symbol}
+                      </span>
+                      <span
+                        onClick={handleSetMaxTokenAmount}
+                        className="ml-2 cursor-pointer font-semibold hover:opacity-90"
+                      >
+                        MAX
+                      </span>
                     </div>
                   </div>
                 )}
@@ -345,14 +344,11 @@ function SwapPage() {
                   <div className="!m-0 flex justify-between pt-3 text-sm">
                     <span>$ {tokenOutToUsd}</span>
                     <div>
-                      {balanceOut ? (
-                        <span>
-                          Balance: {formatToDecimals(+balanceOut?.formatted)}{" "}
-                          {balanceOut?.symbol}
-                        </span>
-                      ) : (
-                        <Skeleton className="h-4 w-20 bg-red-50" />
-                      )}
+                      <span>
+                        Balance:{" "}
+                        {formatToDecimals(Number(balanceOut?.formatted))}{" "}
+                        {balanceOut?.symbol}
+                      </span>
                     </div>
                   </div>
                 )}

@@ -1,5 +1,5 @@
 import { BREAKPOINTS } from "@/constants";
-import { TOKEN_LOGO } from "@/constants/swap/token";
+import { TOKEN_IDS } from "@/constants/swap/token";
 
 // common
 export enum APP_ROUTE {
@@ -27,7 +27,7 @@ export enum SECURE_SROGARE {
   REFRESH_TOKEN = "refreshToken",
 }
 
-export type Token = keyof typeof TOKEN_LOGO;
+export type Token = keyof typeof TOKEN_IDS;
 
 export interface AppContextProps {
   isLogin: boolean;
