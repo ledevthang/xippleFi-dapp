@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Amount from "./amount";
 import { Token } from "@/types";
 import { formatToDecimals } from "@/utils";
+import { ADDRESS, POOL_ABI } from "@/constants/lending";
+import useTransactions from "@/hooks/use-transactions";
+import { useAccount, useReadContract } from "wagmi";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import useTokenInfo from "@/hooks/useTokenInfo";
+import { formatEther, parseEther } from "viem";
+import { TOKENS_CONTRACT_ABI } from "@/constants/swap/token";
+import useDialog from "@/hooks/use-dialog";
+import SuccessDialog from "./success-dialog";
 
 export interface SupplyDialogProps {
   symbol: Token;
@@ -14,11 +25,85 @@ export default function SupplyDialog({
   balance,
   apy,
 }: SupplyDialogProps) {
+  const { address: onBehalfOf } = useAccount();
   const [amount, setAmount] = useState<number>();
+  const [isSupply, setSupply] = useState(false);
+
+  const { onChange, onClose } = useDialog();
+  const { data } = useTokenInfo(symbol);
+
+  const {
+    receipt,
+    writeContract,
+    isLoading: isLoadingTransaction,
+    isSuccess,
+  } = useTransactions();
+
+  const { data: allowance, refetch } = useReadContract({
+    address: TOKENS_CONTRACT_ABI[symbol].address,
+    abi: TOKENS_CONTRACT_ABI[symbol].abi,
+    functionName: "allowance",
+    args: [onBehalfOf, ADDRESS],
+  });
+
+  const handleApproveToken = () => {
+    writeContract({
+      address: TOKENS_CONTRACT_ABI[symbol].address,
+      abi: TOKENS_CONTRACT_ABI[symbol].abi,
+      functionName: "approve",
+      args: [ADDRESS, parseEther(`${balance}`)],
+    });
+  };
+
+  const handleSupplyAsset = () => {
+    setSupply(true);
+    if (onBehalfOf && amount && data?.asset.address)
+      writeContract({
+        address: ADDRESS,
+        abi: POOL_ABI,
+        functionName: "supply",
+        args: [data?.asset.address, parseEther(`${amount}`), onBehalfOf],
+      });
+  };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(+e.target.value);
+    if (e?.target?.value && +e.target.value > balance) setAmount(balance);
+    else setAmount(+e?.target?.value || undefined);
   };
+
+  const onSetMaxValue = () => {
+    setAmount(balance);
+  };
+
+  useEffect(() => {
+    if (isSuccess) refetch();
+  }, [isSuccess, refetch]);
+
+  useEffect(() => {
+    if (amount && isSuccess && isSupply) {
+      onChange({
+        open: true,
+        title: `Supplied`,
+        content: (
+          <SuccessDialog
+            label={` You Supplied ${amount} ${symbol}`}
+            txHash={receipt?.transactionHash}
+          />
+        ),
+        footer: "Ok, close",
+        onSubmit: onClose,
+      });
+      setSupply(false);
+    }
+  }, [
+    amount,
+    isSuccess,
+    isSupply,
+    onChange,
+    onClose,
+    receipt?.transactionHash,
+    symbol,
+  ]);
 
   return (
     <>
@@ -30,6 +115,8 @@ export default function SupplyDialog({
           balance={balance}
           amount={amount}
           onChange={onChangeAmount}
+          onSetMaxValue={onSetMaxValue}
+          realTimePrice={data?.asset?.realTimePrice}
         />
       </div>
 
@@ -54,6 +141,42 @@ export default function SupplyDialog({
           </div>
         </div>
       </div>
+
+      <DialogFooter className="mt-6 flex-1 !justify-center">
+        {!isLoadingTransaction ? (
+          <>
+            {amount ? (
+              allowance &&
+              +formatEther(BigInt(allowance as never)) >= amount ? (
+                <Button
+                  className="w-full"
+                  disabled={!amount}
+                  onClick={handleSupplyAsset}
+                >
+                  {`Supply ${symbol}`}
+                </Button>
+              ) : (
+                <Button
+                  className="w-full"
+                  disabled={!amount}
+                  onClick={handleApproveToken}
+                >
+                  {`Approve ${symbol} to continue`}
+                </Button>
+              )
+            ) : (
+              <Button className="w-full" disabled={!amount}>
+                Enter an amount
+              </Button>
+            )}
+          </>
+        ) : (
+          <Button disabled className="w-full">
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+            Please wait
+          </Button>
+        )}
+      </DialogFooter>
     </>
   );
 }

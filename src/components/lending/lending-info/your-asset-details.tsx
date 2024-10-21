@@ -7,6 +7,7 @@ import Asset from "@/components/common/asset";
 import WithdrawDialog from "../dialog/withdraw-dialog";
 import { AssetType } from "@/types/lending";
 import useDialog from "@/hooks/use-dialog";
+import RepayDialog from "../dialog/repay-dialog";
 
 type YourAssetDetailsProps = AssetType;
 
@@ -17,8 +18,8 @@ function YourAssetDetails({ type }: YourAssetDetailsProps) {
   const handleOpenWithDrowDialog = () => {
     onChange({
       open: true,
-      title: "WithDrow POL",
-      content: <WithdrawDialog />,
+      title: "WithDrow USDT",
+      content: <WithdrawDialog symbol="USDT" />,
     });
   };
 
@@ -26,7 +27,7 @@ function YourAssetDetails({ type }: YourAssetDetailsProps) {
     onChange({
       open: true,
       title: "Repay POL",
-      content: <WithdrawDialog />,
+      content: <RepayDialog />,
     });
   };
 
@@ -40,7 +41,7 @@ function YourAssetDetails({ type }: YourAssetDetailsProps) {
           }
         >
           <div className={`${columnStyles} col-span-2`}>
-            <Asset symbol="BTC" />
+            <Asset symbol="USDT" />
           </div>
           <div className={`${columnStyles} justify-end`}>
             <div className="flex flex-col items-end">

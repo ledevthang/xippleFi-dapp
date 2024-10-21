@@ -1,5 +1,8 @@
 import Asset from "@/components/common/asset";
 import { Token } from "@/types";
+import { formatToDecimals } from "@/utils";
+import { tokenToUsd } from "@/utils/swap";
+import { useMemo } from "react";
 
 interface AmountProps {
   label: string;
@@ -7,9 +10,24 @@ interface AmountProps {
   balance?: number;
   amount?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSetMaxValue?: () => void;
+  realTimePrice?: string;
 }
 
-function Amount({ label, symbol, balance, amount, onChange }: AmountProps) {
+function Amount({
+  label,
+  symbol,
+  balance,
+  amount,
+  realTimePrice,
+  onChange,
+  onSetMaxValue,
+}: AmountProps) {
+  const usd = useMemo(() => {
+    if (realTimePrice) return tokenToUsd(realTimePrice, amount || 0);
+    return 0;
+  }, [amount, realTimePrice]);
+
   return (
     <div className="mt-4 flex flex-col gap-2 space-x-4 rounded-md border-x p-2">
       <div className="flex items-center gap-2">
@@ -23,12 +41,15 @@ function Amount({ label, symbol, balance, amount, onChange }: AmountProps) {
         <Asset symbol={symbol} className="!gap-2" />
       </div>
       <div className="!m-0 flex justify-between text-xs">
-        <span>$0</span>
+        <span>${usd}</span>
         <div>
           <span>
-            {label} {balance}
+            {label} {formatToDecimals(balance, 2)}
           </span>
-          <span className="ml-2 cursor-pointer font-semibold hover:opacity-90">
+          <span
+            className="ml-2 cursor-pointer font-semibold hover:opacity-90"
+            onClick={onSetMaxValue}
+          >
             MAX
           </span>
         </div>
