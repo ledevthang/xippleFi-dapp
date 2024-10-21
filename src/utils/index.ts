@@ -34,7 +34,6 @@ export async function getBalanceByToken(
     address,
     token,
   });
-  console.log("balance: ", balance);
 
   return Number(balance.formatted) || 0;
 }
@@ -44,4 +43,10 @@ export function truncateCurrency(amount: number) {
   if (amount > 999999) return `${(amount / 1000000).toFixed(2)}M`;
   if (amount > 9999) return `${(amount / 1000).toFixed(2)}K`;
   return amount.toFixed(2);
+}
+
+export function findKey(obj: never, value: never) {
+  return Object.keys(obj).filter(
+    (k) => JSON.stringify(obj[k]) === JSON.stringify(value),
+  );
 }

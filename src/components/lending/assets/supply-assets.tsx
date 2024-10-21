@@ -16,11 +16,9 @@ interface SupplyAssetsProps {
 }
 
 function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
-  console.log("data: ", data);
-  const { onChange } = useDialog();
+  const { context, onChange } = useDialog();
   const { address: myAddress } = useAccount();
   const [mappedBalanceData, setMappedBalanceData] = useState<SupplyAsset[]>([]);
-  const [loading, setLoading] = useState(isLoading);
 
   const handleOpenSupplyAssetDialog = (props: SupplyDialogProps) => {
     onChange({
@@ -32,7 +30,6 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
 
   useEffect(() => {
     const fetchBalances = async () => {
-      setLoading(true);
       const results = await Promise.all(
         data.map(async ({ address, ...rest }) => {
           let balance = 0;
@@ -41,7 +38,7 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
               balance = await getBalanceByToken(myAddress, address);
             return {
               ...rest,
-              balance,
+              balance: Number(balance),
               address,
             };
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -55,10 +52,9 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
         }),
       );
       setMappedBalanceData(results);
-      setLoading(false);
     };
     fetchBalances();
-  }, [data, myAddress]);
+  }, [data, myAddress, context.open]);
 
   return (
     <div className="mt-10 flex !h-fit flex-1 flex-col">
@@ -70,7 +66,7 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
       <div className="bg-color-primary flex-1 rounded-sm p-4">
         <Header columns={ASSETS_TO_SUPPLY_HEADER} className="!grid-cols-4" />
         <div className="flex flex-col gap-5">
-          {!mappedBalanceData.length || loading
+          {!mappedBalanceData.length || isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <Row key={index} className="!grid-cols-4">
                   <div className={`${columnStyles} col-span-2`}>

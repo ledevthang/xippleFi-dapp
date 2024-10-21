@@ -50,16 +50,18 @@ function DialogProvider({ children }: PropsWithChildren) {
             </DialogDescription>
           </DialogHeader>
           {content}
-          <DialogFooter className="mt-6 flex-1 !justify-center">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={!footer}
-              onClick={onSubmit}
-            >
-              {footer || "Enter an amount"}
-            </Button>
-          </DialogFooter>
+          {footer && (
+            <DialogFooter className="mt-6 flex-1 !justify-center">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!footer}
+                onClick={onSubmit}
+              >
+                {footer || "Enter an amount"}
+              </Button>
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog.Root>
     </DialogContext.Provider>

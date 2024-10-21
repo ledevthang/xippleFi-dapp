@@ -10,6 +10,7 @@ export interface SupplyAsset {
   apy: number;
   address: `0x${string}`;
   balance?: number;
+  realTimePrice: string;
 }
 
 export interface AssetsReponse {

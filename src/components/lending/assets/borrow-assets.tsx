@@ -3,7 +3,7 @@ import { ASSETS_TO_BORROW_HEADER, columnStyles } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
 import { LendingAssets } from "@/types/lending";
-import BorrowDialog from "../dialog/borrow-dialog";
+import BorrowDialog, { BorrowDialogProps } from "../dialog/borrow-dialog";
 import useDialog from "@/hooks/use-dialog";
 import Asset from "@/components/common/asset";
 
@@ -14,11 +14,11 @@ interface BorrowAssetsProps {
 function BorrowAssets({ data }: BorrowAssetsProps) {
   const { onChange } = useDialog();
 
-  const handleOpenBorrowAssetDialog = () => {
+  const handleOpenBorrowAssetDialog = (props: BorrowDialogProps) => {
     onChange({
       open: true,
       title: "Borrow POL",
-      content: <BorrowDialog />,
+      content: <BorrowDialog {...props} />,
     });
   };
 
@@ -34,7 +34,11 @@ function BorrowAssets({ data }: BorrowAssetsProps) {
           {data.map(({ symbol, apy, liquidity }) => (
             <Row
               key={symbol}
-              onClick={handleOpenBorrowAssetDialog}
+              onClick={() =>
+                handleOpenBorrowAssetDialog({
+                  symbol,
+                })
+              }
               className="!grid-cols-4"
             >
               <div className={`${columnStyles} col-span-2`}>

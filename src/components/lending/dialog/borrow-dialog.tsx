@@ -1,11 +1,21 @@
 import { useState } from "react";
 import Amount from "./amount";
+import { Token } from "@/types";
+import useTokenInfo from "@/hooks/useTokenInfo";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
-export default function BorrowDialog() {
+export interface BorrowDialogProps {
+  symbol: Token;
+}
+
+export default function BorrowDialog({ symbol }: BorrowDialogProps) {
   const [amount, setAmount] = useState<number>();
 
+  const { data } = useTokenInfo(symbol);
+
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(+e.target.value);
+    setAmount(+e.target.value || undefined);
   };
 
   return (
@@ -16,7 +26,8 @@ export default function BorrowDialog() {
           label="Available"
           amount={amount}
           onChange={onChangeAmount}
-          symbol="BNB"
+          symbol={symbol}
+          realTimePrice={data?.asset.realTimePrice}
         />
       </div>
       <div className="mt-6">
@@ -45,6 +56,16 @@ export default function BorrowDialog() {
           </div>
         </div>
       </div>
+
+      <DialogFooter className="mt-6 flex-1 !justify-center">
+        <Button
+          className="w-full"
+          disabled={!amount}
+          // onClick={handleSupplyAsset}
+        >
+          {amount ? `Borrow ${symbol}` : "Enter an amount"}
+        </Button>
+      </DialogFooter>
     </>
   );
 }
