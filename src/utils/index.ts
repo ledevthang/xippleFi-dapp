@@ -38,15 +38,17 @@ export async function getBalanceByToken(
   return Number(balance.formatted) || 0;
 }
 
-export function truncateCurrency(amount: number) {
-  if (amount > 9999990) return `${(amount / 1000000000).toFixed(2)}B`;
-  if (amount > 999999) return `${(amount / 1000000).toFixed(2)}M`;
-  if (amount > 9999) return `${(amount / 1000).toFixed(2)}K`;
-  return amount.toFixed(2);
+export function truncateCurrency(amount: number, decimal?: number) {
+  if (amount > 9999990)
+    return `${(amount / 1000000000).toFixed(decimal || 2)}B`;
+  if (amount > 999999) return `${(amount / 1000000).toFixed(decimal || 2)}M`;
+  if (amount > 9999) return `${(amount / 1000).toFixed(decimal || 2)}K`;
+  return amount.toFixed(decimal || 2);
 }
 
-export function findKey(obj: never, value: never) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function findKey(obj: any, value: any) {
   return Object.keys(obj).filter(
     (k) => JSON.stringify(obj[k]) === JSON.stringify(value),
-  );
+  )[0];
 }

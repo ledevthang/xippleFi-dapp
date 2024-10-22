@@ -32,10 +32,6 @@ export const YOUR_ASSET_TABLE_HEADER = {
       label: "APY",
       className: "text-right",
     },
-    {
-      label: "BORROW LIMIT",
-      className: "text-right",
-    },
   ],
 };
 

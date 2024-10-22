@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Amount from "./amount";
 import { Token } from "@/types";
 import { formatToDecimals } from "@/utils";
-import { ADDRESS, POOL_ABI } from "@/constants/lending";
+import { POOL_ADDRESS, POOL_ABI } from "@/constants/lending";
 import useTransactions from "@/hooks/use-transactions";
 import { useAccount, useReadContract } from "wagmi";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -43,7 +43,7 @@ export default function SupplyDialog({
     address: TOKENS_CONTRACT_ABI[symbol].address,
     abi: TOKENS_CONTRACT_ABI[symbol].abi,
     functionName: "allowance",
-    args: [onBehalfOf, ADDRESS],
+    args: [onBehalfOf, POOL_ADDRESS],
   });
 
   const handleApproveToken = () => {
@@ -51,7 +51,7 @@ export default function SupplyDialog({
       address: TOKENS_CONTRACT_ABI[symbol].address,
       abi: TOKENS_CONTRACT_ABI[symbol].abi,
       functionName: "approve",
-      args: [ADDRESS, parseEther(`${balance}`)],
+      args: [POOL_ADDRESS, parseEther(`${balance}`)],
     });
   };
 
@@ -59,7 +59,7 @@ export default function SupplyDialog({
     setSupply(true);
     if (onBehalfOf && amount && data?.asset.address)
       writeContract({
-        address: ADDRESS,
+        address: POOL_ADDRESS,
         abi: POOL_ABI,
         functionName: "supply",
         args: [data?.asset.address, parseEther(`${amount}`), onBehalfOf],

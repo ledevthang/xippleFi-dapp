@@ -25,7 +25,7 @@ function useTransactions() {
     receipt,
     confirm,
     writeContract,
-    isLoading: isPending || isFetching || isLoading || (confirm && !confirm),
+    isLoading: isPending || isFetching || isLoading || !!(confirm && !confirm),
     isSuccess,
   };
 }
