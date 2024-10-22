@@ -1,4 +1,4 @@
-export const ADDRESS = "0x8dBD487418b28cE39CFd9532f951465845f2be23";
+export const POOL_ADDRESS = "0xF33d5ce7B4F6BeBc8edDb07192F279A21F0697b1";
 
 export const POOL_ABI = [
   {
@@ -74,6 +74,51 @@ export const POOL_ABI = [
   {
     inputs: [
       {
+        internalType: "uint8",
+        name: "id",
+        type: "uint8",
+      },
+      {
+        components: [
+          {
+            internalType: "uint16",
+            name: "ltv",
+            type: "uint16",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationThreshold",
+            type: "uint16",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationBonus",
+            type: "uint16",
+          },
+          {
+            internalType: "address",
+            name: "priceSource",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "label",
+            type: "string",
+          },
+        ],
+        internalType: "struct DataTypes.EModeCategory",
+        name: "category",
+        type: "tuple",
+      },
+    ],
+    name: "configureEModeCategory",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "asset",
         type: "address",
@@ -128,6 +173,52 @@ export const POOL_ABI = [
           },
         ],
         internalType: "struct DataTypes.ReserveConfigurationMap",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8",
+        name: "id",
+        type: "uint8",
+      },
+    ],
+    name: "getEModeCategoryData",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint16",
+            name: "ltv",
+            type: "uint16",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationThreshold",
+            type: "uint16",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationBonus",
+            type: "uint16",
+          },
+          {
+            internalType: "address",
+            name: "priceSource",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "label",
+            type: "string",
+          },
+        ],
+        internalType: "struct DataTypes.EModeCategory",
         name: "",
         type: "tuple",
       },
@@ -363,6 +454,25 @@ export const POOL_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "user",
+        type: "address",
+      },
+    ],
+    name: "getUserEMode",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "asset",
         type: "address",
       },
@@ -433,6 +543,19 @@ export const POOL_ABI = [
         name: "asset",
         type: "address",
       },
+    ],
+    name: "resetIsolationModeTotalDebt",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
       {
         components: [
           {
@@ -447,6 +570,24 @@ export const POOL_ABI = [
       },
     ],
     name: "setConfiguration",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "useAsCollateral",
+        type: "bool",
+      },
+    ],
+    name: "setUserUseReserveAsCollateral",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

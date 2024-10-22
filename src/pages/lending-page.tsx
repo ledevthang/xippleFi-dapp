@@ -1,16 +1,15 @@
-import YourBalance from "@/components/lending/lending-info/your-balance";
 import SupplyAssets from "@/components/lending/assets/supply-assets";
-import BorrowAssets from "@/components/lending/assets/borrow-assets";
-import { MOCK_BORROW_ASSETS } from "@/constants/mock";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "@/types";
 import { getSupplyAssetsService } from "@/services/lending.service";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAccount } from "wagmi";
+import YourAsset from "@/components/lending/lending-info/your-asset";
+import YourAssetSupplied from "@/components/lending/lending-info/your-asset-supplied";
+import YourAssetBorrowed from "@/components/lending/lending-info/your-asset-borrowed";
+import BorrowAssets from "@/components/lending/assets/borrow-assets";
 
 function LendingPage() {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
 
   const { data: supplyAssets, isLoading } = useQuery({
     queryKey: [QUERY_KEY.SUPPLY_ASSETS],
@@ -23,8 +22,20 @@ function LendingPage() {
         <div className="hidden flex-1 flex-col gap-8 sm:flex">
           {isConnected && (
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
-              <YourBalance type="supply" />
-              <YourBalance type="borrow" />
+              <div className={`bg-color-primary rounded-sm p-4`}>
+                <div>
+                  <h3 className="mb-8 text-lg font-bold">Your supplies</h3>
+                  <YourAsset type={"supply"} />
+                  <YourAssetSupplied address={address!} />
+                </div>
+              </div>
+              <div className={`bg-color-secondary rounded-sm p-4`}>
+                <div>
+                  <h3 className="mb-8 text-lg font-bold">Your borrows</h3>
+                  <YourAsset type={"borrow"} />
+                  <YourAssetBorrowed address={address!} />
+                </div>
+              </div>
             </div>
           )}
 
@@ -33,11 +44,11 @@ function LendingPage() {
               data={supplyAssets?.assets || []}
               isLoading={isLoading}
             />
-            <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
+            <BorrowAssets />
           </div>
         </div>
 
-        <Tabs defaultValue="supplies" className="w-full sm:hidden">
+        {/* <Tabs defaultValue="supplies" className="w-full sm:hidden">
           <TabsList className="bg-dialog grid grid-cols-2">
             <TabsTrigger
               value="supplies"
@@ -54,7 +65,15 @@ function LendingPage() {
           </TabsList>
           <TabsContent value="supplies">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
-              {isConnected && <YourBalance type="supply" />}
+              {isConnected && (
+                <div className={`bg-color-primary rounded-sm p-4`}>
+                  <div>
+                    <h3 className="mb-8 text-lg font-bold">Your supplies</h3>
+                    <YourAsset type={"supply"} />
+                    <YourAssetSupplied type={"supply"} address={address!} />
+                  </div>
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
               <SupplyAssets
@@ -65,13 +84,21 @@ function LendingPage() {
           </TabsContent>
           <TabsContent value="borrows">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
-              {isConnected && <YourBalance type="borrow" />}
+              {isConnected && (
+                <div className={`bg-color-primary rounded-sm p-4`}>
+                  <div>
+                    <h3 className="mb-8 text-lg font-bold">Your borrows</h3>
+                    <YourAsset type={"supply"} />
+                    <YourAssetBorrowed address={address!} />
+                  </div>
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
               <BorrowAssets data={MOCK_BORROW_ASSETS as never} />
             </div>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </div>
     </div>
   );

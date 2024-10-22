@@ -9,6 +9,7 @@ import useDialog from "@/hooks/use-dialog";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Decimal } from "decimal.js";
 
 interface SupplyAssetsProps {
   data: SupplyAsset[];
@@ -21,11 +22,13 @@ function SupplyAssets({ data, isLoading }: SupplyAssetsProps) {
   const [mappedBalanceData, setMappedBalanceData] = useState<SupplyAsset[]>([]);
 
   const handleOpenSupplyAssetDialog = (props: SupplyDialogProps) => {
-    onChange({
-      open: true,
-      title: `Supply ${props.symbol}`,
-      content: <SupplyDialog {...props} />,
-    });
+    const balance: unknown = new Decimal(props.balance).toFixed(0);
+    if (Number(balance))
+      onChange({
+        open: true,
+        title: `Supply ${props.symbol}`,
+        content: <SupplyDialog {...props} />,
+      });
   };
 
   useEffect(() => {

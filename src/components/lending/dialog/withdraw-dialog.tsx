@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Amount from "./amount";
 import { Token } from "@/types";
 import useTokenInfo from "@/hooks/useTokenInfo";
 import useTransactions from "@/hooks/use-transactions";
 import { TOKENS_ADDRESS } from "@/constants/swap/token";
-import { ADDRESS, POOL_ABI } from "@/constants/lending";
+import { POOL_ADDRESS, POOL_ABI } from "@/constants/lending";
 import { parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -12,12 +12,18 @@ import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useDialog from "@/hooks/use-dialog";
 import SuccessDialog from "./success-dialog";
+import { formatToDecimals } from "@/utils";
 
 export interface WithdrawDialogProps {
   symbol: Token;
+  supplied: string;
+  refetch: () => void;
 }
 
-export default function WithdrawDialog({ symbol }: WithdrawDialogProps) {
+export default function WithdrawDialog({
+  symbol,
+  supplied,
+}: WithdrawDialogProps) {
   const [amount, setAmount] = useState<number>();
   const { data } = useTokenInfo(symbol);
   const { address } = useAccount();
@@ -33,7 +39,7 @@ export default function WithdrawDialog({ symbol }: WithdrawDialogProps) {
   const handleWithdraw = () => {
     if (address)
       writeContract({
-        address: ADDRESS,
+        address: POOL_ADDRESS,
         abi: POOL_ABI,
         functionName: "widthdraw",
         args: [TOKENS_ADDRESS[symbol], parseEther(`${amount}`), address],
@@ -41,8 +47,18 @@ export default function WithdrawDialog({ symbol }: WithdrawDialogProps) {
   };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(+e?.target?.value || undefined);
+    if (+e.target.value > +supplied) setAmount(+supplied);
+    else setAmount(+e?.target?.value || undefined);
   };
+
+  const handleSetMaxAmount = () => {
+    setAmount(+supplied);
+  };
+
+  const remainingSupply = useMemo(() => {
+    if (amount) return +supplied - amount;
+    return supplied;
+  }, [amount, supplied]);
 
   useEffect(() => {
     if (amount && isSuccess) {
@@ -68,6 +84,8 @@ export default function WithdrawDialog({ symbol }: WithdrawDialogProps) {
         <Amount
           symbol={symbol}
           label="Supply balance"
+          balance={+supplied}
+          onSetMaxValue={handleSetMaxAmount}
           amount={amount}
           onChange={onChangeAmount}
           realTimePrice={data?.asset?.realTimePrice}
@@ -83,21 +101,9 @@ export default function WithdrawDialog({ symbol }: WithdrawDialogProps) {
           </div>
           <div className="flex justify-between text-xs">
             <span>Remaining supply</span>
-            <span>4.00 POL</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <h4 className="text-sm font-semibold">Borrow limit</h4>
-        <div className="mt-4 flex flex-col gap-2">
-          <div className="flex justify-between text-xs">
-            <span>Your Borrow Limit</span>
-            <span>{`$0.11 -> $0.11`}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span>Borrow Limit Used</span>
-            <span>{`0.01% -> 0.01%`}</span>
+            <span>
+              {formatToDecimals(+remainingSupply)} {symbol}
+            </span>
           </div>
         </div>
       </div>
