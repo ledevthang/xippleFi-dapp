@@ -3,9 +3,8 @@ import Amount from "./amount";
 import { Token } from "@/types";
 import useTokenInfo from "@/hooks/useTokenInfo";
 import useTransactions from "@/hooks/use-transactions";
-import { TOKENS_ADDRESS } from "@/constants/swap/token";
 import { POOL_ADDRESS, POOL_ABI } from "@/constants/lending";
-import { parseEther } from "viem";
+import { Address, parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -17,17 +16,19 @@ import { formatToDecimals } from "@/utils";
 export interface WithdrawDialogProps {
   symbol: Token;
   supplied: string;
-  refetch: () => void;
+  asset: Address;
 }
 
 export default function WithdrawDialog({
   symbol,
   supplied,
+  asset,
 }: WithdrawDialogProps) {
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<string>();
   const { data } = useTokenInfo(symbol);
   const { address } = useAccount();
   const { onChange, onClose } = useDialog();
+  console.log("asset: ", asset);
 
   const {
     receipt,
@@ -37,26 +38,28 @@ export default function WithdrawDialog({
   } = useTransactions();
 
   const handleWithdraw = () => {
+    console.log("parseEther(`${amount}`): ", parseEther(amount!).toString());
+
     if (address)
       writeContract({
         address: POOL_ADDRESS,
         abi: POOL_ABI,
-        functionName: "widthdraw",
-        args: [TOKENS_ADDRESS[symbol], parseEther(`${amount}`), address],
+        functionName: "withdraw",
+        args: [asset, parseEther(`${amount}`), address],
       });
   };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (+e.target.value > +supplied) setAmount(+supplied);
-    else setAmount(+e?.target?.value || undefined);
+    if (+e.target.value > +supplied) setAmount(supplied);
+    else setAmount(e?.target?.value || undefined);
   };
 
   const handleSetMaxAmount = () => {
-    setAmount(+supplied);
+    setAmount(supplied);
   };
 
   const remainingSupply = useMemo(() => {
-    if (amount) return +supplied - amount;
+    if (amount) return +supplied - +amount;
     return supplied;
   }, [amount, supplied]);
 
@@ -86,7 +89,7 @@ export default function WithdrawDialog({
           label="Supply balance"
           balance={+supplied}
           onSetMaxValue={handleSetMaxAmount}
-          amount={amount}
+          amount={Number(amount)}
           onChange={onChangeAmount}
           realTimePrice={data?.asset?.realTimePrice}
         />
