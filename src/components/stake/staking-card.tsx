@@ -5,12 +5,12 @@ function StakingCard() {
   return (
     <div className="bg-staking-card rounded p-4">
       <div className="mb-5">
-        <h2 className="text-lg font-semibold">Stake AAVE</h2>
+        <h2 className="text-lg font-semibold">Stake XRP</h2>
         <h5 className="text-balance">Total staked: 3.02M ($492.42M)</h5>
       </div>
 
       <div className="mb-6 grid grid-cols-2 gap-4 rounded border border-[#ebebef14] p-4 xl:grid-cols-5">
-        <Asset symbol="BNB" className="font-semibold" />
+        <Asset symbol="XRP" className="font-semibold" />
         <div>
           <h3 className="text-sm font-semibold">Staking APR</h3>
           <p>4.35%</p>
