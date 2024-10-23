@@ -1,22 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Amount from "./amount";
+import { Address, parseEther } from "viem";
+import { useAccount, useBalance } from "wagmi";
+import { Token } from "@/types";
+import useTransactions from "@/hooks/use-transactions";
+import { POOL_ABI, POOL_ADDRESS } from "@/constants/lending";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import useDialog from "@/hooks/use-dialog";
+import SuccessDialog from "./success-dialog";
 
-export default function RepayDialog() {
-  const [amount, setAmount] = useState<number>();
+export interface RepayDialogProps {
+  symbol: Token;
+  asset: Address;
+  debt: string;
+}
+
+export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
+  const [amount, setAmount] = useState<string>();
+
+  const { onChange, onClose } = useDialog();
+  const { address } = useAccount();
+  const { data: balance } = useBalance({
+    address: address,
+    token: asset,
+  });
+
+  const { writeContract, isLoading, isSuccess, receipt } = useTransactions();
+
+  const handleRepayAsset = () => {
+    if (amount)
+      writeContract({
+        address: POOL_ADDRESS,
+        abi: POOL_ABI,
+        functionName: "repay",
+        args: [asset, parseEther(amount), BigInt(2), address!],
+      });
+  };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(+e.target.value);
+    setAmount(e.target.value || undefined);
   };
+
+  const onSetMaxValue = () => {
+    setAmount(debt);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onChange({
+        open: true,
+        title: "Succeed",
+        content: (
+          <SuccessDialog
+            label={`You Borrowed ${amount} ${symbol}`}
+            txHash={receipt?.transactionHash}
+          />
+        ),
+        footer: "Ok, close",
+        onSubmit: onClose,
+      });
+    }
+  }, [amount, isSuccess, onChange, onClose, receipt?.transactionHash, symbol]);
 
   return (
     <>
       <div className="mt-6">
         <h4 className="text-sm font-semibold">Repay amount</h4>
         <Amount
-          symbol="BNB"
+          symbol={symbol}
           label="Wallet balance"
-          amount={amount}
+          amount={Number(amount)}
           onChange={onChangeAmount}
+          balance={Number(balance?.formatted) || 0}
+          onSetMaxValue={onSetMaxValue}
         />
       </div>
 
@@ -47,6 +105,23 @@ export default function RepayDialog() {
           </div>
         </div>
       </div>
+
+      <DialogFooter className="mt-6 flex-1 !justify-center">
+        {isLoading ? (
+          <Button disabled className="w-full">
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+            Please wait
+          </Button>
+        ) : (
+          <Button
+            className="w-full"
+            disabled={!amount}
+            onClick={handleRepayAsset}
+          >
+            {amount ? `Borrow ${symbol}` : "Enter an amount"}
+          </Button>
+        )}
+      </DialogFooter>
     </>
   );
 }

@@ -40,8 +40,8 @@ function Amount({
         />
         <Asset symbol={symbol} className="!gap-2" />
       </div>
-      <div className="!m-0 flex justify-between text-xs">
-        <span>${usd}</span>
+      <div className="!m-0 !mt-2 flex items-center justify-between text-xs">
+        <div>${usd}</div>
         <div>
           <span>
             {label} {formatToDecimals(balance, 2)}

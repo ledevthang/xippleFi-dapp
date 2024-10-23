@@ -14,7 +14,7 @@ import SuccessDialog from "./success-dialog";
 
 export interface BorrowDialogProps {
   symbol: Token;
-  address: Address;
+  address?: Address;
 }
 
 export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
@@ -30,7 +30,7 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
       address: POOL_ADDRESS,
       abi: POOL_ABI,
       functionName: "borrow",
-      args: [address, parseEther(`${amount}`), BigInt(2), 0, onBehalfOf!],
+      args: [address!, parseEther(`${amount}`), BigInt(2), 0, onBehalfOf!],
     });
   };
 

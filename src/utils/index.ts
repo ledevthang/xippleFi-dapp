@@ -48,7 +48,7 @@ export function truncateCurrency(amount: number, decimal?: number) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function findKey(obj: any, value: any) {
-  return Object.keys(obj).filter(
-    (k) => JSON.stringify(obj[k]) === JSON.stringify(value),
-  )[0];
+  return Object.keys(obj).find(
+    (k) => obj[k].toLowerCase() === value.toLowerCase(),
+  );
 }

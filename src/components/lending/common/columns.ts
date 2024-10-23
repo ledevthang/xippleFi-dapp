@@ -22,10 +22,10 @@ export const YOUR_ASSET_TABLE_HEADER = {
   borrow: [
     {
       label: "BORROWED ASSET",
-      className: "col-span-2",
+      className: "col-span-1",
     },
     {
-      label: "BALANCE",
+      label: "DEBT",
       className: "text-right",
     },
     {

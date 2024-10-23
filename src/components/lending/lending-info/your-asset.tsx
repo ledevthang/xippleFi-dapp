@@ -37,11 +37,11 @@ function YourAsset({ type }: AssetType) {
 
   return (
     <div className="flex gap-2">
-      <Badge variant="outline" className="text-sm text-white">
+      <Badge variant="outline" className="h-9 text-sm text-white">
         Balance ${balance}
       </Badge>
 
-      <Badge variant="outline" className="text-sm text-white">
+      <Badge variant="outline" className="h-9 text-sm text-white">
         APY 1.60%
       </Badge>
 
@@ -50,7 +50,7 @@ function YourAsset({ type }: AssetType) {
           Collateral ${formatToDecimals(Number(data?.[0]) / Math.pow(10, 36))}
         </Badge>
       ) : (
-        <Badge variant="outline" className="text-sm text-white">
+        <Badge variant="outline" className="h-9 text-sm text-white">
           Borrow power used {formatToDecimals(borrowused, 3)}%
         </Badge>
       )}
