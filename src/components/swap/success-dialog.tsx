@@ -25,7 +25,7 @@ function SuccessDialog({
     watchAsset({
       type: "ERC20",
       options: {
-        address: TOKENS_ADDRESS[symbolOut] as string,
+        address: TOKENS_ADDRESS[symbolOut as never] as string,
         symbol: symbolOut,
         decimals: 18,
       },
