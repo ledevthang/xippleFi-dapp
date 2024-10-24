@@ -37,7 +37,7 @@ function SwapPage() {
 
   const { data: balanceIn } = useBalance({
     address: address,
-    token: TOKENS_ADDRESS[symbolIn],
+    token: TOKENS_ADDRESS[symbolIn as never],
     query: {
       refetchInterval: 20000,
     },
@@ -45,7 +45,7 @@ function SwapPage() {
 
   const { data: balanceOut } = useBalance({
     address: address,
-    token: TOKENS_ADDRESS[symbolOut!],
+    token: TOKENS_ADDRESS[symbolOut! as never],
     query: {
       refetchInterval: 20000,
     },
@@ -66,7 +66,7 @@ function SwapPage() {
     functionName: "getAmountsOut",
     args: [
       Number(parseEther(amountIn, "wei")),
-      [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut!]],
+      [TOKENS_ADDRESS[symbolIn as never], TOKENS_ADDRESS[symbolOut! as never]],
     ],
   });
 
@@ -130,7 +130,10 @@ function SwapPage() {
         args: [
           (amountsOut as never)[1],
           (amountsOut as never)[0],
-          [TOKENS_ADDRESS[symbolIn], TOKENS_ADDRESS[symbolOut!]],
+          [
+            TOKENS_ADDRESS[symbolIn as never],
+            TOKENS_ADDRESS[symbolOut! as never],
+          ],
           address,
           newTimestamp,
         ],
