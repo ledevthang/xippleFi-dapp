@@ -1,16 +1,21 @@
+import { Token } from "@/types";
 import Asset from "../common/asset";
 import { Button } from "@/components/ui/button";
 
-function StakingCard() {
+interface StakingCardProps {
+  symbol: Token;
+}
+
+function StakingCard({ symbol }: StakingCardProps) {
   return (
     <div className="bg-staking-card rounded p-4">
       <div className="mb-5">
-        <h2 className="text-lg font-semibold">Stake XRP</h2>
+        <h2 className="text-lg font-semibold">Stake {symbol}</h2>
         <h5 className="text-balance">Total staked: 3.02M ($492.42M)</h5>
       </div>
 
       <div className="mb-6 grid grid-cols-2 gap-4 rounded border border-[#ebebef14] p-4 xl:grid-cols-5">
-        <Asset symbol="XRP" className="font-semibold" />
+        <Asset symbol={symbol} className="font-semibold" />
         <div>
           <h3 className="text-sm font-semibold">Staking APR</h3>
           <p>4.35%</p>
@@ -32,7 +37,7 @@ function StakingCard() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded border border-[#ebebef14] p-4 text-center">
-          <p className="text-sm">Staked AAVE</p>
+          <p className="text-sm">Staked {symbol}</p>
           <p className="my-2 text-lg font-semibold">0</p>
           <p className="text-sm">$0</p>
           <Button className="mt-5 w-full" disabled>
@@ -45,7 +50,7 @@ function StakingCard() {
         </div>
 
         <div className="rounded border border-[#ebebef14] p-4 text-center">
-          <p className="text-sm">Staked AAVE</p>
+          <p className="text-sm">Staked {symbol}</p>
           <p className="my-2 text-lg font-semibold">0</p>
           <p className="text-sm">$0</p>
 
