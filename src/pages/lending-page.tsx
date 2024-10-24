@@ -55,9 +55,9 @@ function LendingPage() {
           <TabsContent value="supplies">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
               {isConnected && (
-                <div className={`bg-color-primary rounded-sm p-4`}>
+                <div className="bg-color-primary rounded-sm p-4">
                   <div>
-                    <h3 className="mb-8 text-lg font-bold">Your supplies</h3>
+                    <h3 className="text-lg font-bold">Your supplies</h3>
                     <YourAssetSupplied address={address!} />
                   </div>
                 </div>
@@ -70,9 +70,9 @@ function LendingPage() {
           <TabsContent value="borrows">
             <div className="grid grid-cols-1 gap-10 transition delay-150 ease-in-out lg:grid-cols-2">
               {isConnected && (
-                <div className={`bg-color-primary rounded-sm p-4`}>
+                <div className="bg-color-primary rounded-sm p-4">
                   <div>
-                    <h3 className="mb-8 text-lg font-bold">Your borrows</h3>
+                    <h3 className="text-lg font-bold">Your borrows</h3>
                     <YourAssetBorrowed address={address!} />
                   </div>
                 </div>
