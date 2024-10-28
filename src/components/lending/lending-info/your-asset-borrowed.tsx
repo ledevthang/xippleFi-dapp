@@ -1,4 +1,4 @@
-import { findKey, formatToDecimals } from "@/utils";
+import { findKey, formatCurrency, formatToDecimals } from "@/utils";
 import { columnStyles, YOUR_ASSET_TABLE_HEADER } from "../common/columns";
 import Header from "../common/header";
 import Row from "../common/row";
@@ -9,10 +9,12 @@ import { useReadContract } from "wagmi";
 import { UI_POOL_ABI, UI_POOL_ADDRESS } from "@/constants/lending/ui-pool";
 import { Address, formatEther } from "viem";
 import { TOKENS_ADDRESS } from "@/constants/swap/token";
-import { Token } from "@/types";
+import { QUERY_KEY, Token } from "@/types";
 import useAddressProvider from "@/hooks/useAddressProvider";
 import { useMemo } from "react";
 import YourAsset from "./your-asset";
+import { useQuery } from "@tanstack/react-query";
+import { getSupplyAssetsService } from "@/services/lending.service";
 
 interface YourAssetBorrowedProps {
   address: Address;
@@ -21,6 +23,17 @@ interface YourAssetBorrowedProps {
 function YourAssetBorrowed({ address }: YourAssetBorrowedProps) {
   const columns = YOUR_ASSET_TABLE_HEADER["borrow"];
   const { onChange } = useDialog();
+
+  const { data: assetsData } = useQuery({
+    queryKey: [QUERY_KEY.SUPPLY_ASSETS],
+    queryFn: getSupplyAssetsService,
+  });
+
+  const findPriceBySymbol = (_symbol: string) => {
+    const asset = assetsData?.assets.find(({ symbol }) => symbol === _symbol);
+    const price = formatEther(BigInt(asset?.realTimePrice || 0));
+    return price;
+  };
 
   const ADDRESS_PROVIDER = useAddressProvider();
 
@@ -52,8 +65,6 @@ function YourAssetBorrowed({ address }: YourAssetBorrowedProps) {
       .filter((item) => item);
   }, [yourBorrows]);
 
-  console.log("borrowd: ", borrowd);
-
   if (!borrowd?.length) {
     return <p className="pt-3 text-center">Nothing borrowed yet</p>;
   }
@@ -75,6 +86,10 @@ function YourAssetBorrowed({ address }: YourAssetBorrowedProps) {
                   ({ underlyingAsset, scaledVariableDebt }, index) => {
                     const symbol = findKey(TOKENS_ADDRESS, underlyingAsset);
                     const debt = formatEther(scaledVariableDebt);
+                    const price = findPriceBySymbol(
+                      symbol === "WXRP" ? "XRP" : symbol!,
+                    );
+                    const totalPrice = +price * +debt;
                     return (
                       <Row
                         key={index}
@@ -93,6 +108,9 @@ function YourAssetBorrowed({ address }: YourAssetBorrowedProps) {
                         <div className={`${columnStyles} justify-end`}>
                           <div className="flex flex-col items-end">
                             <p>{formatToDecimals(+debt)}</p>
+                            <p className="text-xs">
+                              {formatCurrency(totalPrice)}
+                            </p>
                           </div>
                         </div>
                         <div className={`${columnStyles} justify-end`}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Amount from "./amount";
 import { Token } from "@/types";
 import useTokenInfo from "@/hooks/useTokenInfo";
@@ -6,8 +6,8 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import useTransactions from "@/hooks/use-transactions";
 import { POOL_ABI, POOL_ADDRESS } from "@/constants/lending";
-import { Address, parseEther } from "viem";
-import { useAccount } from "wagmi";
+import { Address, formatEther, parseEther } from "viem";
+import { useAccount, useReadContract } from "wagmi";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useDialog from "@/hooks/use-dialog";
 import SuccessDialog from "./success-dialog";
@@ -23,7 +23,26 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
   const { onChange, onClose } = useDialog();
 
   const { address: onBehalfOf } = useAccount();
+
+  const { data: userAccountData } = useReadContract({
+    address: POOL_ADDRESS,
+    abi: POOL_ABI,
+    functionName: "getUserAccountData",
+    args: [onBehalfOf!],
+  });
+
   const { writeContract, isLoading, isSuccess, receipt } = useTransactions();
+
+  const availableBorrow = useMemo(() => {
+    if (userAccountData && data?.asset.realTimePrice)
+      return (
+        Number(userAccountData?.[2]) /
+        Math.pow(10, 36) /
+        +formatEther(BigInt(data?.asset.realTimePrice || 0))
+      );
+
+    return 0;
+  }, [userAccountData, data?.asset.realTimePrice]);
 
   const handleBorrowAsset = () => {
     writeContract({
@@ -35,7 +54,15 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
   };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(+e.target.value || undefined);
+    if (+e.target.value > availableBorrow) {
+      setAmount(availableBorrow);
+    } else {
+      setAmount(+e.target.value || undefined);
+    }
+  };
+
+  const onSetMaxValue = () => {
+    setAmount(availableBorrow);
   };
 
   useEffect(() => {
@@ -65,6 +92,8 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
           onChange={onChangeAmount}
           symbol={symbol}
           realTimePrice={data?.asset.realTimePrice}
+          balance={availableBorrow}
+          onSetMaxValue={onSetMaxValue}
         />
       </div>
       <div className="mt-6">
@@ -73,23 +102,6 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
           <div className="flex justify-between text-xs">
             <span>Borrow APY</span>
             <span>8.15%</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span>Borrow Balance</span>
-            <span>0.000010 DAI</span>
-          </div>
-        </div>
-      </div>
-      <div className="mt-6">
-        <h4 className="text-sm font-semibold">Borrow limit</h4>
-        <div className="mt-4 flex flex-col gap-2">
-          <div className="flex justify-between text-xs">
-            <span>Your Borrow Limit</span>
-            <span>{`$0.11`}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span>Borrow Limit Used</span>
-            <span>{`0.01% -> 0.01%`}</span>
           </div>
         </div>
       </div>

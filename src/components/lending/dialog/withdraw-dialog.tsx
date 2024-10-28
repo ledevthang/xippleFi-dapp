@@ -28,7 +28,6 @@ export default function WithdrawDialog({
   const { data } = useTokenInfo(symbol);
   const { address } = useAccount();
   const { onChange, onClose } = useDialog();
-  console.log("asset: ", asset);
 
   const {
     receipt,
@@ -38,8 +37,6 @@ export default function WithdrawDialog({
   } = useTransactions();
 
   const handleWithdraw = () => {
-    console.log("parseEther(`${amount}`): ", parseEther(amount!).toString());
-
     if (address)
       writeContract({
         address: POOL_ADDRESS,

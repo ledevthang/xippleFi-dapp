@@ -57,7 +57,7 @@ function YourAssetSupplied({ address }: YourAssetDetailsProps) {
   ) => {
     onChange({
       open: true,
-      title: "Withdraw USDT",
+      title: `Withdraw ${symbol}`,
       content: (
         <WithdrawDialog symbol={symbol} supplied={supplied} asset={asset} />
       ),
@@ -90,7 +90,9 @@ function YourAssetSupplied({ address }: YourAssetDetailsProps) {
       ?.flatMap((supplies) => {
         if (typeof supplies !== "number") {
           const suppliedAssets = supplies.filter(
-            ({ scaledATokenBalance }) => !!scaledATokenBalance,
+            ({ scaledATokenBalance }) =>
+              !!scaledATokenBalance &&
+              +formatEther(scaledATokenBalance) > Math.pow(1, -7),
           );
           return suppliedAssets;
         }
