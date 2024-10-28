@@ -91,6 +91,7 @@ function StakingCard({
             <Button
               variant="secondary"
               className="w-full font-bold"
+              disabled={!Number(balance)}
               onClick={handleOpenSupplyAssetDialog}
             >
               Stake
@@ -99,7 +100,7 @@ function StakingCard({
             <Button
               variant="destructive"
               className="w-full font-bold"
-              disabled={!supplied}
+              disabled={!Number(supplied)}
               onClick={handleOpenWithDrowDialog}
             >
               Withdraw
