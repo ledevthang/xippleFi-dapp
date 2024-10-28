@@ -109,7 +109,7 @@ function SupplyAssets() {
             </div>
             <div className={`${columnStyles} justify-end`}>
               <span>
-                {formatToDecimals(Number(nativeBanlance?.formatted) || 0)}{" "}
+                {truncateCurrency(Number(nativeBanlance?.formatted) || 0)}
               </span>
             </div>
           </Row>
