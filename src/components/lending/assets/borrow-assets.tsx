@@ -56,6 +56,7 @@ function BorrowAssets() {
                       handleOpenBorrowAssetDialog({
                         symbol: symbol as Token,
                         address: underlyingAsset,
+                        liquidity: availableLiquidity,
                       })
                     }
                     className="!grid-cols-4"

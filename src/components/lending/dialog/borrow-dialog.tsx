@@ -15,9 +15,14 @@ import SuccessDialog from "./success-dialog";
 export interface BorrowDialogProps {
   symbol: Token;
   address?: Address;
+  liquidity: bigint;
 }
 
-export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
+export default function BorrowDialog({
+  symbol,
+  address,
+  liquidity,
+}: BorrowDialogProps) {
   const [amount, setAmount] = useState<number>();
   const { data } = useTokenInfo(symbol);
   const { onChange, onClose } = useDialog();
@@ -54,7 +59,9 @@ export default function BorrowDialog({ symbol, address }: BorrowDialogProps) {
   };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (+e.target.value > availableBorrow) {
+    if (+e.target.value > +formatEther(liquidity)) {
+      setAmount(+formatEther(liquidity));
+    } else if (+e.target.value > availableBorrow) {
       setAmount(availableBorrow);
     } else {
       setAmount(+e.target.value || undefined);
