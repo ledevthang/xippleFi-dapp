@@ -17,8 +17,8 @@ function SupplyAssets() {
   const { address: myAddress } = useAccount();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [mappedBalanceData, setMappedBalanceData] = useState<any[]>();
-
   const ADDRESS_PROVIDER = useAddressProvider();
+
   const { data } = useReadContract({
     address: UI_POOL_ADDRESS,
     abi: UI_POOL_ABI,
@@ -28,6 +28,7 @@ function SupplyAssets() {
       refetchInterval: 3000,
     },
   });
+
   const { data: nativeBanlance } = useBalance({
     address: myAddress,
   });

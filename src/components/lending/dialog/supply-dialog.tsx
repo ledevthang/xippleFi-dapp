@@ -125,6 +125,7 @@ export default function SupplyDialog({
         )}
       </>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowance, amount, symbol]);
 
   useEffect(() => {

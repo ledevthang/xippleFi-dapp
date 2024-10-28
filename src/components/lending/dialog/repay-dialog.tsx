@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Amount from "./amount";
 import { Address, parseEther } from "viem";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useReadContract } from "wagmi";
 import { Token } from "@/types";
 import useTransactions from "@/hooks/use-transactions";
 import { POOL_ABI, POOL_ADDRESS } from "@/constants/lending";
@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useDialog from "@/hooks/use-dialog";
 import SuccessDialog from "./success-dialog";
+import { TOKENS_CONTRACT_ABI } from "@/constants/swap/token";
+import { formatToDecimals } from "@/utils";
+import useTokenInfo from "@/hooks/useTokenInfo";
 
 export interface RepayDialogProps {
   symbol: Token;
@@ -19,8 +22,10 @@ export interface RepayDialogProps {
 
 export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
   const [amount, setAmount] = useState<string>();
+  const [isRepay, setRepay] = useState(false);
 
   const { onChange, onClose } = useDialog();
+  const { data } = useTokenInfo(symbol);
   const { address } = useAccount();
   const { data: balance } = useBalance({
     address: address,
@@ -29,18 +34,40 @@ export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
 
   const { writeContract, isLoading, isSuccess, receipt } = useTransactions();
 
+  const { data: allowance } = useReadContract({
+    address: TOKENS_CONTRACT_ABI[symbol].address,
+    abi: TOKENS_CONTRACT_ABI[symbol].abi,
+    functionName: "allowance",
+    args: [address, POOL_ADDRESS],
+  });
+
+  const handleApproveToken = () => {
+    writeContract({
+      address: TOKENS_CONTRACT_ABI[symbol].address,
+      abi: TOKENS_CONTRACT_ABI[symbol].abi,
+      functionName: "approve",
+      args: [POOL_ADDRESS, parseEther(`${amount}`)],
+    });
+  };
+
   const handleRepayAsset = () => {
-    if (amount)
+    if (amount) {
+      setRepay(true);
       writeContract({
         address: POOL_ADDRESS,
         abi: POOL_ABI,
         functionName: "repay",
         args: [asset, parseEther(amount), BigInt(2), address!],
       });
+    }
   };
 
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value || undefined);
+    if (+e.target.value > +debt) {
+      setAmount(debt);
+    } else {
+      setAmount(e.target.value || undefined);
+    }
   };
 
   const onSetMaxValue = () => {
@@ -48,21 +75,30 @@ export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && isRepay) {
       onChange({
         open: true,
         title: "Succeed",
         content: (
           <SuccessDialog
-            label={`You Borrowed ${amount} ${symbol}`}
+            label={`You repay ${amount} ${symbol}`}
             txHash={receipt?.transactionHash}
           />
         ),
         footer: "Ok, close",
         onSubmit: onClose,
       });
+      setRepay(false);
     }
-  }, [amount, isSuccess, onChange, onClose, receipt?.transactionHash, symbol]);
+  }, [
+    amount,
+    isSuccess,
+    onChange,
+    onClose,
+    receipt?.transactionHash,
+    symbol,
+    isRepay,
+  ]);
 
   return (
     <>
@@ -75,6 +111,7 @@ export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
           onChange={onChangeAmount}
           balance={Number(balance?.formatted) || 0}
           onSetMaxValue={onSetMaxValue}
+          realTimePrice={data?.asset.realTimePrice}
         />
       </div>
 
@@ -87,21 +124,9 @@ export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
           </div>
           <div className="flex justify-between text-xs">
             <span>Borrow Balance</span>
-            <span>0.000010 DAI</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <h4 className="text-sm font-semibold">Borrow limit</h4>
-        <div className="mt-4 flex flex-col gap-2">
-          <div className="flex justify-between text-xs">
-            <span>Your Borrow Limit</span>
-            <span>{`$0.11`}</span>
-          </div>
-          <div className="flex justify-between text-xs">
-            <span>Borrow Limit Used</span>
-            <span>{`0.01% -> 0.01%`}</span>
+            <span>
+              {formatToDecimals(+debt)} {symbol}
+            </span>
           </div>
         </div>
       </div>
@@ -116,9 +141,13 @@ export default function RepayDialog({ symbol, asset, debt }: RepayDialogProps) {
           <Button
             className="w-full"
             disabled={!amount}
-            onClick={handleRepayAsset}
+            onClick={allowance ? handleRepayAsset : handleApproveToken}
           >
-            {amount ? `Borrow ${symbol}` : "Enter an amount"}
+            {amount
+              ? allowance
+                ? `Repay ${symbol}`
+                : `Approve ${symbol}`
+              : "Enter an amount"}
           </Button>
         )}
       </DialogFooter>

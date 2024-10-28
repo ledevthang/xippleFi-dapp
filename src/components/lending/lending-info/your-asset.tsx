@@ -15,6 +15,7 @@ function YourAsset({ type, balance }: YourAssetProps) {
   const {
     context: { open },
   } = useDialog();
+
   const { data, refetch } = useReadContract({
     address: POOL_ADDRESS,
     abi: POOL_ABI,
