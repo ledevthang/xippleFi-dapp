@@ -11,7 +11,6 @@ function StakePage() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [mappedBalanceData, setMappedBalanceData] = useState<any[]>();
-  console.log("mappedBalanceData: ", mappedBalanceData);
 
   const { address } = useAccount();
 
@@ -104,7 +103,9 @@ function StakePage() {
                       priceInMarketReferenceCurrency={
                         priceInMarketReferenceCurrency
                       }
-                      supplied={formatEther(supplied!.scaledATokenBalance)}
+                      supplied={formatEther(
+                        supplied?.scaledATokenBalance || BigInt(0),
+                      )}
                       asset={underlyingAsset}
                     />
                     <StakingCard
@@ -115,7 +116,9 @@ function StakePage() {
                       priceInMarketReferenceCurrency={
                         priceInMarketReferenceCurrency
                       }
-                      supplied={formatEther(supplied!.scaledATokenBalance)}
+                      supplied={formatEther(
+                        supplied?.scaledATokenBalance || BigInt(0),
+                      )}
                       asset={underlyingAsset}
                     />
                   </>
@@ -130,7 +133,9 @@ function StakePage() {
                     priceInMarketReferenceCurrency={
                       priceInMarketReferenceCurrency
                     }
-                    supplied={formatEther(supplied!.scaledATokenBalance)}
+                    supplied={formatEther(
+                      supplied?.scaledATokenBalance || BigInt(0),
+                    )}
                     asset={underlyingAsset}
                   />
                 );

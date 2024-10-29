@@ -37,7 +37,7 @@ function BorrowAssets() {
   };
 
   return (
-    <div className="mt-5 flex !h-fit flex-1 flex-col">
+    <div className="flex !h-fit flex-1 flex-col">
       <div className="bg-color-secondary flex-1 rounded-sm p-4">
         <div className="mb-7 flex items-center gap-9">
           <h3 className="px-2 text-xl font-bold">Assets to borrow</h3>

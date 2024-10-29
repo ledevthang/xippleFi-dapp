@@ -11,7 +11,7 @@ function LendingPage() {
     <div className="bg-image flex flex-1 pb-5">
       <div className="container mx-auto my-4 flex flex-1 px-3">
         <div className="hidden flex-1 flex-col gap-8 sm:flex">
-          <div className="grid grid-cols-2 gap-4 transition delay-150 ease-in-out lg:grid-cols-2">
+          <div className="grid grid-flow-row grid-cols-2 items-start gap-4 transition delay-150 ease-in-out">
             <div>
               {isConnected && (
                 <div className="bg-color-primary mb-5 rounded-sm p-4">
@@ -25,7 +25,7 @@ function LendingPage() {
             </div>
             <div>
               {isConnected && (
-                <div className="bg-color-secondary mb-5 h-fit rounded-sm p-4">
+                <div className="bg-color-secondary mb-5 rounded-sm p-4">
                   <div>
                     <h3 className="text-lg font-bold">Your borrows</h3>
                     <YourAssetBorrowed address={address!} />
