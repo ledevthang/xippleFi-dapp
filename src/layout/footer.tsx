@@ -9,7 +9,8 @@ function Footer() {
     <div className="flex items-center border-t border-[#ebebef14] bg-[url('/images/footer-bg.svg')] bg-cover py-10">
       <div className="container mx-auto flex flex-row flex-wrap gap-y-10 px-3 sm:justify-between">
         <div className="basis-1/2 sm:basis-2/5">
-          <a href="/" className="logo">
+          <a href="/" className="logo flex items-center gap-2">
+            <img src="/xipplefi_logo.png" alt="logo" className="logo size-16" />
             XippleFi
           </a>
           <div className="mt-2 flex cursor-pointer gap-3">
