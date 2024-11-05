@@ -5,8 +5,8 @@ import Header from "../common/header";
 import Row from "../common/row";
 import SupplyDialog, { SupplyDialogProps } from "../dialog/supply-dialog";
 import useDialog from "@/hooks/use-dialog";
-import { useAccount, useBalance, useReadContract } from "wagmi";
-import { useEffect, useMemo, useState } from "react";
+import { useAccount, useReadContract } from "wagmi";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Decimal } from "decimal.js";
 import { UI_POOL_ABI, UI_POOL_ADDRESS } from "@/constants/lending/ui-pool";
@@ -29,17 +29,17 @@ function SupplyAssets() {
     },
   });
 
-  const { data: nativeBanlance } = useBalance({
-    address: myAddress,
-  });
+  // const { data: nativeBanlance } = useBalance({
+  //   address: myAddress,
+  // });
 
   const supplyAssets = data?.[0];
 
-  const nativeAsset = useMemo(() => {
-    return mappedBalanceData?.find(({ symbol }) => {
-      return symbol === "WXRP";
-    });
-  }, [mappedBalanceData]);
+  // const nativeAsset = useMemo(() => {
+  //   return mappedBalanceData?.find(({ symbol }) => {
+  //     return symbol === "WXRP";
+  //   });
+  // }, [mappedBalanceData]);
 
   const handleOpenSupplyAssetDialog = (props: SupplyDialogProps) => {
     const balance: unknown = new Decimal(props.balance).toFixed(0);
@@ -90,7 +90,7 @@ function SupplyAssets() {
           className="mb-6 !grid-cols-4"
         />
         <div className="flex flex-col gap-5">
-          <Row
+          {/* <Row
             className="!grid-cols-4"
             onClick={() =>
               handleOpenSupplyAssetDialog({
@@ -112,7 +112,7 @@ function SupplyAssets() {
                 {truncateCurrency(Number(nativeBanlance?.formatted) || 0)}
               </span>
             </div>
-          </Row>
+          </Row> */}
           {!mappedBalanceData?.length
             ? Array.from({ length: 6 }).map((_, index) => (
                 <Row key={index} className="!grid-cols-4">
